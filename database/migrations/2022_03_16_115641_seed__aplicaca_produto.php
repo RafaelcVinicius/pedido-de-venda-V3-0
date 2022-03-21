@@ -1,10 +1,12 @@
 <?php
 
+use Database\Seeders\AplicacaoProduto;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Symfony\Component\Console\Output\ConsoleOutput;
 
-return new class extends Migration
+class SeedAplicacaProduto extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +15,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('password_resets', function (Blueprint $table) {
-            $table->string('email')->index();
-            $table->string('token');
-            $table->timestamp('created_at')->nullable();
-        });
+        $seeder = new  AplicacaoProduto;
+        $seeder->run();
     }
 
     /**
@@ -27,6 +26,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('password_resets');
+        $output = new ConsoleOutput;
+        $output->writeln('<info>nothing to do</info>');
     }
-};
+}
