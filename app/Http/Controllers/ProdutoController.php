@@ -14,7 +14,6 @@ class ProdutoController extends Controller
      */
     public function index()
     {
-
         $dados = Produtos::get();
         return view('produto.produtos')->with('produtos', $dados);
     }
@@ -42,8 +41,8 @@ class ProdutoController extends Controller
        $dados->nome         = $request->nome;
        $dados->codbarras    = $request->codbarras;
        $dados->qtde         = $request->qtde;
-       $dados->id_aplicacao = $request->aplicacao;
-       $dados->id_un        = $request->unidade;
+       $dados->id_aplicacao = $request->id_aplicacao;
+       $dados->id_un        = $request->id_unidade;
        $dados->referencia   = $request->referencia;
        $dados->precocusto   = str_replace(',' , '.', str_replace('.' ,'' , $request->precocusto));
        $dados->precovenda   = str_replace(',' , '.', str_replace('.' ,'' , $request->precovenda));

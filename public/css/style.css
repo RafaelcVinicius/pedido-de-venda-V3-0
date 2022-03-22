@@ -137,6 +137,7 @@ a{
     background-color: #00a2ff;
     height: 40px;
     border-radius: 25px;
+    color: white;
 }
 .titulo h5{
 font-size: 33px;
@@ -154,12 +155,39 @@ font-size: 13.5px;
     box-shadow: 0 0 5px #ccc;
     padding: 33px;
 }
+.corpo-box-fundo-off{
+    display: flex;
+    max-width: 1300px;
+    width: 100%;
+}
+.corpo-box-form{
+    display: flex;
+    max-width: 1300px;
+    width: 100%;
+}
 .component{
     display: flex;
     max-width: 1366px;
     width: 100%;
     flex-direction: column;
-    row-gap: 3rem;
+    row-gap: 1rem;
+}
+.component-sec{
+    display: flex;
+    max-width: 1366px;
+    width: 100%;
+    flex-direction: column;
+    row-gap: 1rem;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 5px #ccc;
+    padding: 33px;
+}
+.component-ter{
+    display: flex; 
+    position: relative; 
+    column-gap: 1rem;
+
 }
 .div-grup{
     display: flex;
@@ -186,8 +214,17 @@ font-size: 13.5px;
     column-gap: 1rem;
     justify-content: space-between;
 }
+.div-flex-start{
+    display: flex;
+    max-width: 1366px;
+    width: 100%;
+    flex-wrap: wrap;
+    column-gap: 1rem;
+    justify-content: start;
+}
 fieldset{
     border:1px solid #0000003a;
+    border-top-left-radius: 25px !important;
     border-radius: 25px;
     position: relative;
     height: 55px;
@@ -228,18 +265,72 @@ legend{
 .link-header{
     color: #00aeff;
 }
-
-/* .div-flex {
-    position: relative;
+.consulta-table{
     display: flex;
-    flex-wrap: wrap;
-    max-width: 1280px;
+    justify-content: flex-end;
     width: 100%;
 }
-table tbody{
-    color: rgba(0, 0, 0, 0.85);
 
+.div-tabela {
+    width: 100%;
 }
-table tbody tr{
+.div-tabela table thead {
+    background-color: #03202e;
+    color: white;
     height: 50px;
-} */
+}
+.div-tabela table thead tr {
+   gap: -1rem;
+}
+.div-tabela table{
+    width: 100%;
+    text-align: center;
+}
+.div-tabela table tbody{
+    color: rgba(0, 0, 0, 0.85);
+    background-color: white;
+    border-left:1px solid #00ccff94;
+    border-right:1px solid #00ccff94;
+}
+.div-tabela table tbody tr{
+    height: 50px;
+    background-color: white;
+    border-bottom: 1px solid #00ccff94;
+} 
+.thead-tr{
+background-color: #03202e;
+}
+table{ 
+    border-collapse:collapse;
+}
+.borda-left{
+    border-left:1px solid #00ccff94;
+}
+
+
+.lista{
+    position: absolute;
+    width: calc(100% - 2px);
+    border: 1px solid #0000003a;; 
+    top: 54px;
+    background-color: white;
+    border-bottom-left-radius: 25px;
+    border-bottom-right-radius: 25px;
+    padding-bottom: 20px;
+    border-top: none;
+}
+.lista li{
+
+    list-style: none;
+    padding:5px 15px;
+}
+.lista li:hover{
+    background-color: #00a2ff;
+    color: white;
+}
+.fieldsetativo{
+    border-top-left-radius: 0px;
+    border-top-right-radius: 25px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px ;
+}

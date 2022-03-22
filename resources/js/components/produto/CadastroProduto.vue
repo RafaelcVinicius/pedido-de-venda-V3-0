@@ -17,7 +17,7 @@
             <div class="div-flex">
                 <fieldset class=" cl-4">
                     <legend><label for="referencia">Referencia</label></legend>  
-                    <input autocomplete="off" v-model="referencia" class="div-absolut" type="text" name="referencia" id="referencia">
+                    <input autocompleteDadosTabela="off" v-model="referencia" class="div-absolut" type="text" name="referencia" id="referencia">
                 </fieldset>
 
                 <div class="div-relativ cl-3">
@@ -161,122 +161,5 @@ export default {
 </script>
 
 <style scoped>
-    /*.zin{
-        z-index: 5;
-        opacity: 1;
-    }
-    .erro{
-        position: absolute;
-        top:40px;
-        font-size: 13.5px;
-        color: red;
-    }
-    .t-ms{
-        width: 20px !important;
-        height: 20px !important;
-    }
-    h4{
-        font-size: 21px;
-        color: rgba(0, 0, 0, 0.85);
-        font-weight: 500;
-    }
-    .i-btn{
-        position: absolute;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 46px;
-        height: 40px;
-        top: -11px;
-        right: -1px;
-        background-color: rgb(255, 255, 255);
-        border-radius: 0 25px 25px 0;
-        border-top: 1px solid rgb(0 0 0 / 24%);
-        border-right: 1px solid rgb(0 0 0 / 24%);
-        border-bottom: 1px solid rgb(0 0 0 / 24%);
-        cursor: pointer;
-        z-index: 11;
-    }
-    .inp-w{
-        width: calc(100% - 65px);
-        user-select:none;
-    }
-    .listaselect{
-        position: absolute;
-        z-index: 10;
-        width: calc(100%);
-        background-color: white;
-        border-bottom: 1px solid rgb(0 0 0 / 24%);
-        border-left: 1px solid rgb(0 0 0 / 24%);
-        border-right: 1px solid rgb(0 0 0 / 24%);
-        border-radius: 0 0 20px 25px;
-        padding-bottom: 30px;
-    }
-    .listaselect li{
-        font-size: 15px;
-        color: rgba(0, 0, 0, 0.75);
-        list-style: none;
-        padding: 6px;
-        padding-left: 20px;
-    }
-    .listaselect li:hover{
-        background-color: rgb(0, 162, 255);
-    }
-    .displayselect{
-        border-bottom-right-radius: 0px !important;
-        border-bottom-left-radius: 0px !important;
-        border-bottom:0px solid white !important;  
-        padding-bottom: 20px; 
-    }
-    .form-com{
-        display: flex;
-        flex-wrap: wrap;
-        max-width: 1280px;
-        width: 100%;
-        gap: 2rem;
-        margin: 50px auto;
-    }
-    input{
-        width: calc(100% - 40px);
-        font-size: 14px;
-        color: rgba(0, 0, 0, 0.75);
-    }
-    .identificadores{
-        justify-content: space-between;
-        width: 100%;
-        gap: 1rem;
-    }
-    .div-relativ{
-        position: relative;
-        height: 55px;
-    }
-    .div-relativ-fild{
-        width: 100%;
-        position: relative;
-        height: 50px;
-        border-top-left-radius: 25px;
-        border-top-right-radius: 25px;
-        border-bottom-right-radius: 25px;
-        border-bottom-left-radius: 25px;
-        border-color: rgb(0 0 0 / 24%);
-        cursor: pointer;
-    }
-    .div-relativ-fild legend{
-        margin-left: 20px;
-        color: rgba(0, 0, 0, 1);
-        font-size: 14px;
-    }
-    .div-absolut{
-        position: absolute;
-        left: 20px;
-        height: 23px;
-    }
-    .valores{
-        justify-content: space-between;
-        width: 100%;
-        gap: 1rem;
-    }
-    .cl-10{
-        width: 100%;
-    }*/
+ 
 </style>

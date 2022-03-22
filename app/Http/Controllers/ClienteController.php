@@ -39,14 +39,14 @@ class ClienteController extends Controller
     {
         $dados = new Clientes();
         $dados->nome = $request->nome;
-        $dados->cnpjcpf = $request->cnpjcpf;
-        $dados->telefone = $request->telefone;
+        $dados->cnpjcpf = str_replace(',' , '', str_replace('.' ,'' , str_replace('-' , '' ,$request->cnpjcpf)));
+        $dados->telefone = str_replace('(' , '', str_replace(')' ,'' , str_replace('-' , '' ,str_replace(' ' , '' ,$request->telefone))));
         $dados->save();
 
         $dadosendereco = new Enderecocliente();
         $dadosendereco->id_cliente = $dados->id;
         $dadosendereco->uf = $request->uf;
-        $dadosendereco->cep = $request->cep;
+        $dadosendereco->cep = str_replace('-' , '' ,$request->cep);
         $dadosendereco->municipio = $request->municipio;
         $dadosendereco->endereco = $request->endereco;
         $dadosendereco->numero = $request->numero;

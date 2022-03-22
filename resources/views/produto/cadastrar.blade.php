@@ -8,11 +8,14 @@
                     <span> <a class="link-header" href="{{route('produtos.store')}}">Listagem de todos os produtos</a> > Cadastro de produtos</span>
                 </div>
                 <div class="btn-padrao">
-                    <a class="btn-ancora" href="{{route('produtos.store')}}">Gravar</a>
+                    <button class="btn-ancora" type="button" onclick="document.getElementById('form').submit()" >Gravar</button>
                 </div>  
             </div>   
             <div class="corpo-box">
-                <cadastro-produto />
+                <form id="form" action="{{route('produtos.store')}}" method="POST" class="corpo-box-form">
+                    @csrf
+                    <cadastro-produto />
+                </form>
             </div>        
         </div>  
     </section>

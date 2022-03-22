@@ -12,7 +12,17 @@
                 </div>  
             </div>   
             <div class="corpo-box">
-
+                <dados-tabela
+                :url="'produtos'" 
+                >
+                    <th><p slot="thead-1">ID</p></th>
+                    <th><p slot="thead-2">Nome</p></th>
+                    <th><p slot="thead-3">Código de Barras</p></th>
+                    <th><p slot="thead-4">Referencia</p></th>
+                    <th><p slot="thead-5">Preço de Venda</p></th>
+                    <th><p slot="thead-6">Qtde atual</p></th>
+                    <th><p slot="thead-7"></p></th>
+                <dados-tabela />
             </div>        
         </div>  
     </section>

@@ -3,6 +3,7 @@
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProdutoController;
+use App\Http\Controllers\PedidoController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -34,7 +35,7 @@ Route::prefix('home')->group(function () {
 
         route::get('/', [PedidoController::class, 'index'])->name('pedido.index');
 
-        route::get('/cadastro', [PedidoController::class, 'cadastro'])->name('pedido.cadastro');
+        route::get('/cadastro', [PedidoController::class, 'create'])->name('pedido.create');
 
         route::get('/cadastro/{id}', [PedidoController::class, 'editarpedido'])->name('pedido.editarpedido');
     });
