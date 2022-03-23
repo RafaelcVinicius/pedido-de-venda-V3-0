@@ -26,12 +26,16 @@ Vue.component('DadosTabela', require('./components/tabela/DadosTabela.vue').defa
 
 //pedido de venda principal. 
 Vue.component('PedidoDeVenda', require('./components/pedido/PedidoDeVenda.vue').default);
+     //bloco cliente   
+    Vue.component('DadosCliente', require('./components/pedido/dadoscliente/DadosCliente.vue').default);
+    Vue.component('PedidoStatus', require('./components/pedido/dadoscliente/PedidoStatus.vue').default);
+    Vue.component('PesquisaPedidoCliente', require('./components/pedido/dadoscliente/PesquisaPedidoCliente.vue').default);
 
-Vue.component('DadosCliente', require('./components/pedido/DadosCliente.vue').default);
-
-Vue.component('ListaProdutos', require('./components/pedido/ListaProdutos.vue').default);
-
-Vue.component('PedidoStatus', require('./components/pedido/PedidoStatus.vue').default);
+    //bloco produto
+    Vue.component('DadosProdutos', require('./components/pedido/dadosproduto/DadosProdutos.vue').default);
+    Vue.component('PesquisaPedidoProduto', require('./components/pedido/dadosproduto/PesquisaPedidoProduto.vue').default);
+    Vue.component('TabelaProdutos', require('./components/pedido/dadosproduto/TabelaProdutos.vue').default);
+    Vue.component('EditarProdutos', require('./components/pedido/dadosproduto/EditarProdutos.vue').default);
 
 
 const app = new Vue({

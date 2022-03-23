@@ -17,7 +17,7 @@
                         <th @click="ordenar('campo5')" ><slot name="thead-5"></slot></th>
                         <th @click="ordenar('campo6')" ><slot name="thead-6"></slot></th>
                         <th @click="ordenar('campo7')" ><slot name="thead-7"></slot></th>
-                        <th>ação</th>
+                        <th>Ação</th>
                     </tr>    
                 </thead>
                 <tbody>

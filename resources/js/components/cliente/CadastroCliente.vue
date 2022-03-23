@@ -171,9 +171,7 @@ export default {
                 this.maskcnpjcpf = '##.###.###/####-##'
             }
         },
-        
-    },
-      
+    },    
 }
 </script>
 
