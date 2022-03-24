@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\ClienteResource;
 use App\Models\Clientes;
+use App\Models\Especies;
 use App\Models\Produtos;
 use Facade\FlareClient\Http\Client;
 use Illuminate\Http\Request;
@@ -41,6 +42,14 @@ class ApiController extends Controller
         ->where('nome', 'like', '%'.$request->pesquisa.'%')
         ->orWhere('cnpjcpf', 'like', '%'.$request->pesquisa.'%')
         ->take(10)->get();
+        return json_encode($dados);
+    }
+
+    //consulta todas as especies
+
+    public function especies(){
+        $dados = Especies::all();
+
         return json_encode($dados);
     }
 }

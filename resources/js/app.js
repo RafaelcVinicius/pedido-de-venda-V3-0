@@ -37,6 +37,9 @@ Vue.component('PedidoDeVenda', require('./components/pedido/PedidoDeVenda.vue').
     Vue.component('TabelaProdutos', require('./components/pedido/dadosproduto/TabelaProdutos.vue').default);
     Vue.component('EditarProdutos', require('./components/pedido/dadosproduto/EditarProdutos.vue').default);
 
+    //outros    
+    Vue.component('FormaDePagamento', require('./components/pedido/outros/FormaDePagamento.vue').default);
+    Vue.component('DetalhesDoPedido', require('./components/pedido/outros/DetalhesDoPedido.vue').default);
 
 const app = new Vue({
     store,

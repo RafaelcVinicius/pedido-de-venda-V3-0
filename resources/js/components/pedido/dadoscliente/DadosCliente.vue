@@ -17,7 +17,7 @@
                 <PesquisaPedidoCliente :legend="'cliente'" :estilo="'cl-4 component-ter'"/>
                 <fieldset class="none cl-3">
                     <legend><label for="cnpjcpf">CNPJ/CPF</label></legend>  
-                    <input type="text" readonly="readonly" v-model="cnpjcpfCliente" name="cnpjcpf" id="cnpjcpf">
+                    <input type="text" readonly="readonly" v-model="cnpjcpfCliente.cnpjcpf" v-mask="cnpjcpfCliente.mask" name="cnpjcpf" id="cnpjcpf">
                 </fieldset>
             </div>
             <div class="div-flex-start">  
@@ -38,14 +38,14 @@ export default {
     data(){
         return{
             data:'',
-            email:'',
+            email:'',           
         }
     },
     computed:{
-        cnpjcpfCliente(){      
+        cnpjcpfCliente(){               
             return this.$store.getters.cnpjcpfCliente
         }
-    }
+    },
 }
 </script>
 

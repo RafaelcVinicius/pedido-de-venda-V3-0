@@ -1,41 +1,42 @@
 <template>
-    <div class="component-editar">
+    <div id="editarcom" class="component-editar">
         <div class="opacity" @click="fechardisplay">            
         </div>
         <div class="editar">
             <div class="editheader">
-                <h5>Inclusão de produto</h5>
+                <h5>Edição de produto</h5>
+                <span>Editando o produto: {{produtos.nome}}</span>
             </div>
             <div class="editbody">
                 <div class="div-flex">   
                     <fieldset class="cl-7">
                         <legend><label for="data">Quantidade</label></legend>  
-                        <input type="text" autocomplete="off" v-model="quantidade" name="quantidade" id="quantidade">
+                        <input type="text" autocomplete="off" v-model="produtos.qtde" v-money="money" name="quantidade" id="quantidade">
                     </fieldset>   
                 </div>   
                 <div class="div-flex">   
                     <fieldset class="cl-7">
                         <legend><label for="valor">Valor un.(R$)</label></legend>  
-                        <input type="text" autocomplete="off" v-model="valor" name="valor" id="valor">
+                        <input type="text" autocomplete="off" v-model="produtos.valor" v-money="money" name="valor" id="valor">
                     </fieldset>   
                 </div>   
                 <div class="div-flex">   
                     <fieldset class="cl-7">
                         <legend><label for="desconto">Desconto(%)</label></legend>  
-                        <input type="text" autocomplete="off" v-model="desconto" name="desconto" id="desconto">
+                        <input type="text" autocomplete="off" v-model="produtos.desconto" v-money="money" name="desconto" id="desconto">
                     </fieldset>   
                 </div>   
                 <div class="div-flex">   
                     <fieldset class="cl-7">
                         <legend><label for="acrescimo">Acréscimo(%)</label></legend>  
-                        <input type="text" autocomplete="off" v-model="acrescimo" name="acrescimo" id="acrescimo">
+                        <input type="text" autocomplete="off" v-model="produtos.acrescimo" v-money="money" name="acrescimo" id="acrescimo">
                     </fieldset>   
                 </div>                  
             </div>
             <div class="div-flex-footer">   
                 <div class="btns">
                     <button @click="fechardisplay" >Cancelar</button>
-                    <button>Gravar</button>
+                    <button @click="alterar">Gravar</button>
                 </div>
             </div>   
         </div>
@@ -46,21 +47,46 @@
 export default {
     data(){
         return{
-            
+            money: {
+                decimal: ',',
+                thousands: '.',
+                precision: 2,
+            }                
         }
     },
     methods:{
         fechardisplay(){
-           this.$store.commit('showDisplayEditarProduto', true)
+           this.$store.commit('showDisplayEditarProduto', false)
+        },
+        alterar(){
+           this.$store.commit('showDisplayEditarProduto', false)
+           this.$store.commit('commitAlteracoesProduto', true)            
+        }
+    },
+    computed:{
+        produtos(){
+            return this.$store.state.itemEmEdicao
         }
     }
 }
 </script>
-
 <style scoped>
+.component-editar{
+    display: flex;
+    position: absolute; 
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    z-index: 1000;
+}
     .editheader h5{
         font-size: 25px;
         font-weight: 400;
+        color: white;
+    }
+    .editheader span{
         color: white;
     }
     .editbody{  
@@ -80,26 +106,31 @@ export default {
         max-width: 89.000%;
     }
     .div-flex-footer{
-        margin: 1rem 1.5rem ;
         display: flex;
         justify-self: flex-end;
         width: 100%;
         flex-wrap: wrap;
         column-gap: 1rem;
         justify-content: flex-start;
+        background-color: white;
+        box-shadow: 0 0 5px #ccc;
     }
     .btns{
         display: flex;
+        margin: 1rem 1.5rem ;
         max-width: 450px;
         width: calc(100% - 40px);
         justify-content: space-between;
     }
     .btns button{
         background-color: #009cf7;
-        width: 200px;
+        width: 195px;
         height: 45px;
         border-radius: 25px;
         color: white;
         font-size: 16px;
+    }
+    input{
+        text-align: end;
     }
 </style>

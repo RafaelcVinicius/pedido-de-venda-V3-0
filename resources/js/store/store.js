@@ -4,17 +4,30 @@ import axios from 'axios';
 
 Vue.use(Vuex)
 
+
+Vue.filter('colocarvirgula', valor => {
+	return `${parseFloat(valor).toFixed(2)}`.replace('.', ',')
+})
+
+
 export default new Vuex.Store({
 
     state: {
+            //ativar ou desativar componente
         displayProduto:true,
         displayEditarProduto:false,
+
+            //produtos da tabela ou clientes 
         dadosTabela:{
             campo1:Number,
             campo2:String,
             campo3:Number,
             },
 
+            //item em edição
+        itemEmEdicao:{},
+
+            //estrutura do pedido
         dadosPedido:{
             vendedor:{
                 nome:'',
@@ -27,21 +40,47 @@ export default new Vuex.Store({
                 nome:'',
                 cnpjcpf:'',
             },
+            detalhamentoDeValores:{
+                acrescimo:0,
+                desconto:0,
+            },
             itens:[]
-        }
+        },
+            //Fim
     },
     getters: {
-        cnpjcpfCliente(state){            
-            return state.dadosPedido.cliente.cnpjcpf
+        cnpjcpfCliente(state){  
+            var obj = {};  
+            obj.cnpjcpf = state.dadosPedido.cliente.cnpjcpf       
+            if( state.dadosPedido.cliente.cnpjcpf.length > 11){    
+                obj.mask = '##.###.###/####-##'
+            }else{
+                obj.mask='###.###.###-##'
+            }
+            return obj
         },
         listaDeProdutos(state){
             return state.dadosPedido.itens
         },
         valorTotalUn(state){
             return state.dadosPedido.itens.map(produto => ((produto.acrescimo / 100) * (produto.valor * produto.qtde) - (produto.desconto / 100) * (produto.valor * produto.qtde)) + produto.valor * produto.qtde )
-        }
+        },
+        totalizadoresDoPedido(state){
+            var obj={};
+
+            obj.totalprodutos = state.dadosPedido.itens.map(produto => ((produto.acrescimo / 100) * (produto.valor * produto.qtde) - (produto.desconto / 100) * (produto.valor * produto.qtde)) + produto.valor * produto.qtde ).reduce((total, atual) => total + atual, 0).toFixed(2)
+            obj.valortotal = eval(state.dadosPedido.detalhamentoDeValores.acrescimo + state.dadosPedido.itens.map(produto => ((produto.acrescimo / 100) * (produto.valor * produto.qtde) - (produto.desconto / 100) * (produto.valor * produto.qtde)) + produto.valor * produto.qtde ).reduce((total, atual) => total + atual, 0)).toFixed(2) 
+            console.log(obj.valortotal)
+            return obj
+        },   
+        detalhamentoValores(state){
+            var obj={};
+            obj.acrescimo = state.dadosPedido.detalhamentoDeValores.acrescimo
+            obj.desconto  = state.dadosPedido.detalhamentoDeValores.desconto
+            return obj
+        }     
     },
-    mutations: {
+    mutations: {        
         addRegistroTabela(state, payload){
             state.dadosTabela = payload
         },
@@ -77,9 +116,25 @@ export default new Vuex.Store({
             state.displayEditarProduto = !state.displayEditarProduto
         },
         clonandoObjeto(state, payload){
-           console.log(state.dadosPedido.itens[payload])
-
-
+        var obj = {...state.dadosPedido.itens[payload]}
+        obj.index = payload
+        console.log(obj)
+        state.itemEmEdicao.valor       = Number(obj.valor).toFixed(2)
+        state.itemEmEdicao.qtde        = Number(obj.qtde).toFixed(2)
+        state.itemEmEdicao.acrescimo   = Number(obj.acrescimo).toFixed(2)
+        state.itemEmEdicao.desconto    = Number(obj.desconto).toFixed(2)
+        state.itemEmEdicao.index       = Number(obj.index)
+        
+        },
+        commitAlteracoesProduto(state, payload){
+            state.dadosPedido.itens[state.itemEmEdicao.index].qtde      = Number(state.itemEmEdicao.qtde.replace('.','').replace(',','.'))
+            state.dadosPedido.itens[state.itemEmEdicao.index].valor     = Number(state.itemEmEdicao.valor.replace('.','').replace(',','.'))
+            state.dadosPedido.itens[state.itemEmEdicao.index].acrescimo = Number(state.itemEmEdicao.acrescimo.replace('.','').replace(',','.'))
+            state.dadosPedido.itens[state.itemEmEdicao.index].desconto  = Number(state.itemEmEdicao.desconto.replace('.','').replace(',','.'))
+        },
+        alterarDetalheDeValores(state, payload){
+            state.dadosPedido.detalhamentoDeValores.acrescimo = payload.acrescimo
+            state.dadosPedido.detalhamentoDeValores.desconto = payload.desconto
         }
     },
     actions:{
@@ -102,6 +157,13 @@ export default new Vuex.Store({
         alterarProduto({commit}, payload) {       
             commit('showDisplayEditarProduto', true)
             commit('clonandoObjeto', payload)
+
+        },
+        setAlterarDetalheDeValores({commit}, payload){
+            var obj={};
+            obj.acrescimo = Number(payload.acrescimo.replace('.','').replace(',','.')).toFixed(2)
+            obj.desconto = Number(payload.desconto.replace('.','').replace(',','.')).toFixed(2)
+            commit('alterarDetalheDeValores', obj)
 
         }
     }

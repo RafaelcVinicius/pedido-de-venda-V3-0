@@ -25,3 +25,5 @@ Route::post('produtoswhere', [ApiController::class, 'produtoswhere'])->name('pro
 
 Route::get('clientes', [ApiController::class, 'clientes'])->name('clientes');
 Route::post('clienteswhere', [ApiController::class, 'clienteswhere'])->name('clienteswhere');
+
+route::get('especies', [ApiController::class, 'especies'])->name('especies');

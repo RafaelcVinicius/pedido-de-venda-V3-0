@@ -9,7 +9,7 @@ class Especies extends Model
 {
     use HasFactory;
 
-    protected $table = 'especie';
+    protected $table = 'especies';
     protected $primarykey = 'id';
     public $timestamps = true;
 }

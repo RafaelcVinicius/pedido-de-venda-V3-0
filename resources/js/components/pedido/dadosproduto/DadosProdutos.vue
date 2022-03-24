@@ -1,5 +1,5 @@
 <template>
-    <div class="component-sec">
+    <div style="top: 0;" class="component-sec">
         <div class="div-grup">
             <h5 class="titulo-grupo">Dados do Produtos</h5>
             <div class="div-flex">  

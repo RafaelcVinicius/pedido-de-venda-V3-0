@@ -41,6 +41,7 @@ class ClienteController extends Controller
         $dados->nome = $request->nome;
         $dados->cnpjcpf = str_replace(',' , '', str_replace('.' ,'' , str_replace('-' , '' ,$request->cnpjcpf)));
         $dados->telefone = str_replace('(' , '', str_replace(')' ,'' , str_replace('-' , '' ,str_replace(' ' , '' ,$request->telefone))));
+        $dados->email = $request->email;
         $dados->save();
 
         $dadosendereco = new Enderecocliente();

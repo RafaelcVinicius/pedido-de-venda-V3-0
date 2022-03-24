@@ -18,6 +18,7 @@ class CreateClientesTable extends Migration
             $table->string('nome');
             $table->string('cnpjcpf');
             $table->string('telefone');
+            $table->string('email');
             $table->timestamps();
         });
     }
