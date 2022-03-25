@@ -41,6 +41,11 @@ Vue.component('PedidoDeVenda', require('./components/pedido/PedidoDeVenda.vue').
     Vue.component('FormaDePagamento', require('./components/pedido/outros/FormaDePagamento.vue').default);
     Vue.component('DetalhesDoPedido', require('./components/pedido/outros/DetalhesDoPedido.vue').default);
 
+    //button 
+    
+    Vue.component('BotaoSalvarPedido', require('./components/pedido/botao/BotaoSalvarPedido.vue').default);
+
+
 const app = new Vue({
     store,
     el: '#app',

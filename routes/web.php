@@ -37,6 +37,8 @@ Route::prefix('home')->group(function () {
 
         route::get('/cadastro', [PedidoController::class, 'create'])->name('pedido.create');
 
+        route::post('/gravar', [PedidoController::class, 'store'])->name('pedido.store');
+
         route::get('/cadastro/{id}', [PedidoController::class, 'editarpedido'])->name('pedido.editarpedido');
     });
 });

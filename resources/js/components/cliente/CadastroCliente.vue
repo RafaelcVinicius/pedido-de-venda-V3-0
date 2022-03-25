@@ -212,7 +212,7 @@ export default {
         position: absolute;
         top: 53px;
         z-index: 10;
-        width: calc(100% - 2.5px);
+        width: calc(100% - 1.5px);
         height: 250px;
         overflow-y: scroll;
         background-color: white;
@@ -234,7 +234,7 @@ export default {
         position: absolute;
         top:55px;
         z-index: 10;
-        width: calc(100% - 2.5px);
+        width: calc(100% - 1.5px);
         height: 250px;
         overflow:scroll;
         background-color: white;

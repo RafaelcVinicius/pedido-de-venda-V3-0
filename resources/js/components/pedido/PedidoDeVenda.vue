@@ -2,13 +2,17 @@
     <div class="component">
         <DadosCliente  />
         <DadosProdutos v-show="viewProduto"/>
-        <DetalhesDoPedido v-show="viewProduto"/>
-        <FormaDePagamento v-show="viewProduto"/>
+        <DetalhesDoPedido v-show="viewDetalhesPedido"/>
+        <FormaDePagamento v-show="viewDetalhesPedido"/>
     </div>
 </template>
 
 <script>
 export default {
+    props:{
+        vendedor:String,
+        idvendedor:Number
+    },
     data(){
         return{
 
@@ -20,6 +24,9 @@ export default {
         },
         viewEditProduto(){
             return this.$store.state.displayEditarProduto
+        },
+        viewDetalhesPedido(){
+            return this.$store.state.displayDetalhesPedido
         }
     },
     watch:{
@@ -33,6 +40,9 @@ export default {
                 window.document.body.style =  ''
             }
         }
+    },
+    created(){
+        this.$store.commit('commitVendedor', {nome:this.vendedor, id:this.idvendedor})
     }
 }
 </script>

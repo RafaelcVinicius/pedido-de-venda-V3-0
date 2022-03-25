@@ -5,7 +5,7 @@
           <div class="div-flex">  
                 <fieldset class="none cl-4">
                     <legend><label for="vendedor">Vendedor</label></legend>  
-                    <input type="text" readonly="readonly" v-model="vendedor" name="vendedor" id="vendedor">
+                    <input type="text" readonly="readonly" v-model="vendedor.nome" name="vendedor" id="vendedor">
                 </fieldset>
                 <fieldset class="cl-3">
                     <legend><label for="data">Data</label></legend>  
@@ -32,9 +32,6 @@
 
 <script>
 export default {
-    props:{
-        vendedor:{type:String},
-    },
     data(){
         return{
             data:'',
@@ -44,6 +41,9 @@ export default {
     computed:{
         cnpjcpfCliente(){               
             return this.$store.getters.cnpjcpfCliente
+        },
+        vendedor(){
+          return  this.$store.state.dadosPedido.vendedor
         }
     },
 }

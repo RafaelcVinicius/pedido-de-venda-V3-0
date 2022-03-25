@@ -8,12 +8,13 @@
                     <span> <a class="link-header" href="{{route('produtos.store')}}">Listagem de todos os Pedidos</a> > Cadastro de Pedido</span>
                 </div>
                 <div class="btn-padrao">
-                    <button class="btn-ancora" type="button" onclick="document.getElementById('form').submit()" >Gravar</button>
+                   <botao-salvar-pedido />
                 </div>  
             </div>   
             <div class="corpo-box-fundo-off">
-                <pedido-de-venda> 
-
+                <pedido-de-venda 
+                :vendedor="{{json_encode(Auth::user()->name)}}" :idvendedor="{{json_encode(Auth::user()->id)}}"
+                > 
                 </pedido-de-venda>
             </div>        
         </div>  

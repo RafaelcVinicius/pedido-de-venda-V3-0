@@ -27,3 +27,11 @@ Route::get('clientes', [ApiController::class, 'clientes'])->name('clientes');
 Route::post('clienteswhere', [ApiController::class, 'clienteswhere'])->name('clienteswhere');
 
 route::get('especies', [ApiController::class, 'especies'])->name('especies');
+
+route::get('formasentrega', [ApiController::class, 'formasentrega'])->name('formasentrega');
+
+route::get('consultauf', [ApiController::class, 'consultauf'])->name('consultauf');
+route::post('consultacidadesuf', [ApiController::class, 'consultacidadesuf'])->name('consultacidadesuf');
+
+Route::get('consultaaplicaca', [ApiController::class, 'consultaAplicaca'])->name('consultaaplicaca');
+Route::get('consultaun', [ApiController::class, 'consultaUn'])->name('consultaun');

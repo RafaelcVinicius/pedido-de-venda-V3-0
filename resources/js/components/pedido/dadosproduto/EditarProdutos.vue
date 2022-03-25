@@ -8,29 +8,35 @@
                 <span>Editando o produto: {{produtos.nome}}</span>
             </div>
             <div class="editbody">
-                <div class="div-flex">   
-                    <fieldset class="cl-7">
+                <div class="div-flex cl-7">   
+                    <fieldset class="cl">
                         <legend><label for="data">Quantidade</label></legend>  
                         <input type="text" autocomplete="off" v-model="produtos.qtde" v-money="money" name="quantidade" id="quantidade">
                     </fieldset>   
                 </div>   
-                <div class="div-flex">   
-                    <fieldset class="cl-7">
-                        <legend><label for="valor">Valor un.(R$)</label></legend>  
+                <div class="div-flex cl-7">   
+                    <fieldset class="cl">
+                        <legend><label for="valor">Valor un.(R$)</label></legend>
                         <input type="text" autocomplete="off" v-model="produtos.valor" v-money="money" name="valor" id="valor">
                     </fieldset>   
                 </div>   
-                <div class="div-flex">   
-                    <fieldset class="cl-7">
+                <div class="div-flex cl-7">
+                    <fieldset class="cl">
                         <legend><label for="desconto">Desconto(%)</label></legend>  
                         <input type="text" autocomplete="off" v-model="produtos.desconto" v-money="money" name="desconto" id="desconto">
                     </fieldset>   
                 </div>   
-                <div class="div-flex">   
-                    <fieldset class="cl-7">
+                <div class="div-flex  cl-7">   
+                    <fieldset class="cl">
                         <legend><label for="acrescimo">Acréscimo(%)</label></legend>  
                         <input type="text" autocomplete="off" v-model="produtos.acrescimo" v-money="money" name="acrescimo" id="acrescimo">
                     </fieldset>   
+                </div>                  
+                <div class="div-flex cl-7">   
+                    <fieldset class="cl textarea">
+                        <legend>Observação do item</legend>
+                        <textarea name="observacao" v-model="produtos.obs" id="observacao"></textarea>
+                    </fieldset>
                 </div>                  
             </div>
             <div class="div-flex-footer">   
@@ -102,8 +108,8 @@ export default {
         justify-content: flex-start;
     }
     .cl-7{
-        flex: 0 0 89.0000%;
-        max-width: 89.000%;
+        max-width: 400px;
+        width: 100%;
     }
     .div-flex-footer{
         display: flex;

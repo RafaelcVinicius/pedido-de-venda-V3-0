@@ -12,4 +12,10 @@ class PedidoController extends Controller
     public function create(){
         return view('pedido.cadastro');
     }
+
+    public function store(Request $request){
+        dd($request);
+    }
+
+
 }

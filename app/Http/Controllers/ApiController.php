@@ -3,10 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\ClienteResource;
+use App\Models\Aplicacaoproduto;
+use App\Models\Cidade;
 use App\Models\Clientes;
 use App\Models\Especies;
+use App\Models\Formaentrega;
 use App\Models\Produtos;
-use Facade\FlareClient\Http\Client;
+use App\Models\Uf;
+use App\Models\Uncomercial;
 use Illuminate\Http\Request;
 
 class ApiController extends Controller
@@ -49,6 +53,34 @@ class ApiController extends Controller
 
     public function especies(){
         $dados = Especies::all();
+
+        return json_encode($dados);
+    }
+
+    //mostra as formas de entrega 
+    public function formasentrega(){
+        $dados = Formaentrega::all();
+        return json_encode($dados);
+    }
+
+    //consulta uf e cidade
+    public function consultauf(){
+        $dados = Uf::all();
+        return json_encode($dados);
+    }
+    public function consultacidadesuf(Request $request){
+        $dados = Cidade::where('id_uf', $request->idcidade)->get();
+
+        return json_encode($dados);
+    }
+    public function consultaUn(){
+        $dados = Uncomercial::all();
+
+        return json_encode($dados);
+    }
+
+    public function consultaAplicaca(){
+        $dados = Aplicacaoproduto::all();
 
         return json_encode($dados);
     }

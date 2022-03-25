@@ -21,25 +21,25 @@
                 </fieldset>
 
                 <div class="div-relativ cl-3">
-                    <fieldset @click.prevent="ativarDisplayAplicacao" class="div-relativ-fild" :class="{displayselect: displayAplic}">
+                    <fieldset @click.prevent="ativarDisplayAplicacao" class="div-relativ-fild" :class="{fieldsetativo: displayAplic}">
                         <legend><label for="aplicacao">Aplicação</label></legend>  
                         <input  readonly="readonly" v-model="Aplicacao.nome" class="div-absolut inp-w" type="text" name="aplicacao" id="aplicacao">
                         <input v-model="Aplicacao.id" type="hidden" name="id_aplicacao">
-                        <i class="i-btn" :class="{displayselect: displayAplic}" ><svg width="18px" height="18px" viewBox="0 0 900 300"><path d="M312 251l222 -236c10,-9 23,-15 37,-15l1 0c29,0 53,24 53,53 0,14 -6,27 -17,38l-258 274c-8,7 -17,12 -27,14 -4,1 -7,1 -11,1 -3,0 -7,0 -10,-1 -11,-2 -20,-7 -26,-13l-261 -276c-10,-10 -15,-23 -15,-37 0,-29 24,-53 53,-53l1 0c14,0 27,6 35,15l223 236z" class="fillButton"></path></svg></i>
+                        <i class="i-btn" :class="{fieldsetativo: displayAplic}" ><svg width="18px" height="18px" viewBox="0 0 900 300"><path d="M312 251l222 -236c10,-9 23,-15 37,-15l1 0c29,0 53,24 53,53 0,14 -6,27 -17,38l-258 274c-8,7 -17,12 -27,14 -4,1 -7,1 -11,1 -3,0 -7,0 -10,-1 -11,-2 -20,-7 -26,-13l-261 -276c-10,-10 -15,-23 -15,-37 0,-29 24,-53 53,-53l1 0c14,0 27,6 35,15l223 236z" class="fillButton"></path></svg></i>
                     </fieldset>
-                    <ul v-show="displayAplic" class="listaselect">
+                    <ul v-show="displayAplic" class="lista">
                         <li @click.prevent="definirAplicacao(aplicacao)" v-for="(aplicacao, i) in listaAplicacao" :key="i" >{{aplicacao.nome}}</li>
                     </ul>
                 </div>
                 
                 <div class="div-relativ cl">
-                    <fieldset @click.prevent="ativarDisplayUn" class="div-relativ-fild" :class="{displayselect: displayUn}">
+                    <fieldset @click.prevent="ativarDisplayUn" class="div-relativ-fild" :class="{fieldsetativo: displayUn}">
                         <legend><label for="unidade">Unidade comercial</label></legend>  
                         <input  readonly="readonly" v-model="Uncomercial.nome" class="div-absolut inp-w" type="text" name="unidade" id="unidade">
                         <input v-model="Uncomercial.id"  type="hidden" name="id_unidade">
-                        <i class="i-btn" :class="{displayselect: displayUn}" ><svg width="18px" height="18px" viewBox="0 0 900 300"><path d="M312 251l222 -236c10,-9 23,-15 37,-15l1 0c29,0 53,24 53,53 0,14 -6,27 -17,38l-258 274c-8,7 -17,12 -27,14 -4,1 -7,1 -11,1 -3,0 -7,0 -10,-1 -11,-2 -20,-7 -26,-13l-261 -276c-10,-10 -15,-23 -15,-37 0,-29 24,-53 53,-53l1 0c14,0 27,6 35,15l223 236z" class="fillButton"></path></svg></i>
+                        <i class="i-btn" :class="{fieldsetativo: displayUn}" ><svg width="18px" height="18px" viewBox="0 0 900 300"><path d="M312 251l222 -236c10,-9 23,-15 37,-15l1 0c29,0 53,24 53,53 0,14 -6,27 -17,38l-258 274c-8,7 -17,12 -27,14 -4,1 -7,1 -11,1 -3,0 -7,0 -10,-1 -11,-2 -20,-7 -26,-13l-261 -276c-10,-10 -15,-23 -15,-37 0,-29 24,-53 53,-53l1 0c14,0 27,6 35,15l223 236z" class="fillButton"></path></svg></i>
                     </fieldset>
-                    <ul v-show="displayUn" class="listaselect">
+                    <ul v-show="displayUn" class="lista">
                         <li @click.prevent="definirUncomercial(un)" v-for="(un, i) in listaUn" :key="i" >{{un.nome}}</li>
                     </ul>
                 </div>
