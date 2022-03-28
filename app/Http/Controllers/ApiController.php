@@ -8,6 +8,7 @@ use App\Models\Cidade;
 use App\Models\Clientes;
 use App\Models\Especies;
 use App\Models\Formaentrega;
+use App\Models\Pedido;
 use App\Models\Produtos;
 use App\Models\Uf;
 use App\Models\Uncomercial;
@@ -83,5 +84,12 @@ class ApiController extends Controller
         $dados = Aplicacaoproduto::all();
 
         return json_encode($dados);
+    }
+
+    //consolta todos os pedidos
+
+    public function pedido(){
+        return json_encode(Pedido::selectdados());
+    
     }
 }

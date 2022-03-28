@@ -52,4 +52,14 @@ class Pedido extends Model
         $produto = DB::table('itempedido')->select(DB::raw('cast(SUM((percdesconto / 100) * (valor * qtde))as decimal(15,2)) as valorTotal'))->where('id_venda', $this->id)->first();
         return $produto;
     }
+
+    public static function selectdados(){
+        $produtos = Self::select(
+           'id as campo1',
+           'id_cliente as campo2',
+           'previsaoentrega as campo3',
+           'situacao as campo4',                
+       )->get();
+       return $produtos;
+   }
 }

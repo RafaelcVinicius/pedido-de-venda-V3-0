@@ -176,20 +176,6 @@ export default {
 </script>
 
 <style scoped>
-
-    ::-webkit-scrollbar {
-        width: 12px;
-    }
-
-    ::-webkit-scrollbar-track {
-    background: white;        
-    }
-
-    ::-webkit-scrollbar-thumb {
-        background-color: #03202e;    
-        border-radius: 20px;       
-        border: 3px solid white;  
-    }
    .erro{
         color: red;
         position: absolute;

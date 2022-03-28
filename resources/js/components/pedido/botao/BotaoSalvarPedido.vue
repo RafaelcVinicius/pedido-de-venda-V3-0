@@ -14,8 +14,8 @@ export default {
     methods:{
         gravarPedido(){
             this.$store.commit('gravarPedido', true)
-        }
-    }    
+        },
+    }
 }
 </script>
 

@@ -5500,9 +5500,8 @@ __webpack_require__.r(__webpack_exports__);
   watch: {
     viewEditProduto: function viewEditProduto() {
       if (this.$store.state.displayEditarProduto === true) {
-        window.document.body.style = 'overflow:hidden;';
-        var topstyle = window.window.scrollY;
-        window.document.getElementById('editarcom').style = 'top:' + topstyle + 'px;';
+        window.document.body.style = 'overflow:hidden;'; // var topstyle = window.window.scrollY
+        // window.document.getElementById('editarcom').style = 'top:'+topstyle+'px;'
       } else {
         window.document.body.style = '';
       }
@@ -5598,12 +5597,39 @@ __webpack_require__.r(__webpack_exports__);
       email: ''
     };
   },
+  methods: {
+    setEmail: function setEmail() {
+      console.log(this.email);
+      this.$store.state.dadosPedido.email = this.email;
+    },
+    setData: function setData() {
+      this.$store.state.dadosPedido.previsaoEntrega = this.data;
+    }
+  },
+  created: function created() {
+    if (this.$store.state.dadosPedido.idPedido === 0) {
+      var data = new Date();
+      var dia = String(data.getDate()).padStart(2, '0');
+      var mes = String(data.getMonth() + 1).padStart(2, '0');
+      var ano = data.getFullYear();
+      var dataAtual = ano + '-' + mes + '-' + dia;
+      console.log(dataAtual);
+      this.data = dataAtual;
+      this.$store.state.dadosPedido.previsaoEntrega = dataAtual;
+    }
+  },
   computed: {
-    cnpjcpfCliente: function cnpjcpfCliente() {
+    dadosCliente: function dadosCliente() {
       return this.$store.getters.cnpjcpfCliente;
     },
     vendedor: function vendedor() {
       return this.$store.state.dadosPedido.vendedor;
+    },
+    getemail: function getemail() {
+      this.email = this.$store.state.dadosPedido.email;
+    },
+    getdata: function getdata() {
+      this.data = this.$store.state.dadosPedido.previsaoEntrega;
     }
   }
 });
@@ -6477,18 +6503,27 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
     sortBy: (sort_by__WEBPACK_IMPORTED_MODULE_0___default())
   },
   props: {
-    url: String
+    url: String,
+    vshow: Boolean,
+    editurl: String
   },
   data: function data() {
     return {
       pesquisa: '',
-      timeout: null
+      timeout: null,
+      display: null
     };
   },
   methods: {
@@ -6511,6 +6546,16 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (res) {
         _this2.$store.commit('addRegistroTabela', res.data);
       });
+    },
+    edit: function edit(id) {
+      window.location.href = this.editurl.replace('_ID_', id);
+    },
+    status: function status(id) {
+      if (this.display == id) {
+        this.display = null;
+      } else {
+        this.display = id;
+      }
     }
   },
   computed: {
@@ -6522,7 +6567,7 @@ __webpack_require__.r(__webpack_exports__);
     var _this3 = this;
 
     this.$http.get('/api/' + this.url).then(function (res) {
-      _this3.$store.commit('addRegistroTabela', res.data), console.log(_this3.$store.state.dadosTabela);
+      _this3.$store.commit('addRegistroTabela', res.data);
     });
   }
 });
@@ -6661,10 +6706,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
@@ -6673,9 +6716,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
-
-vue__WEBPACK_IMPORTED_MODULE_2__["default"].use(vuex__WEBPACK_IMPORTED_MODULE_0__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_2__["default"].filter('colocarvirgula', function (valor) {
+vue__WEBPACK_IMPORTED_MODULE_1__["default"].use(vuex__WEBPACK_IMPORTED_MODULE_0__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_1__["default"].filter('colocarvirgula', function (valor) {
   return "".concat(parseFloat(valor).toFixed(2)).replace('.', ',');
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new vuex__WEBPACK_IMPORTED_MODULE_0__["default"].Store({
@@ -6694,12 +6736,14 @@ vue__WEBPACK_IMPORTED_MODULE_2__["default"].filter('colocarvirgula', function (v
     itemEmEdicao: {},
     //estrutura do pedido
     dadosPedido: {
+      idPedido: 0,
+      email: '',
+      previsaoEntrega: '',
+      status: 'Aberto',
       vendedor: {
         nome: '',
         id: ''
       },
-      previsaoEntrega: '',
-      status: 'Aberto',
       cliente: {
         id: '',
         nome: '',
@@ -6843,13 +6887,15 @@ vue__WEBPACK_IMPORTED_MODULE_2__["default"].filter('colocarvirgula', function (v
       state.dadosPedido.formasDePagamento = payload;
     },
     gravarPedido: function gravarPedido(state, payload) {
+      console.log('ff');
       var obj = {};
       obj = state.dadosPedido;
-      axios__WEBPACK_IMPORTED_MODULE_1___default().http.post('home/pedido/gravar', {
-        obj: obj
-      }).then(function (res) {
-        console.log(res);
+      axios.post(window.location.href.split('/')[0] + '//' + window.location.hostname + ':8000' + '/home/pedido/gravar', {
+        data: obj
+      }).then(function (response) {
+        response;
       });
+      window.location.href = 'http://localhost:8000/home/pedido';
     }
   },
   actions: {
@@ -11955,7 +12001,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n[data-v-4aaaf25e]::-webkit-scrollbar {\n     width: 12px;\n}\n[data-v-4aaaf25e]::-webkit-scrollbar-track {\n background: white;\n}\n[data-v-4aaaf25e]::-webkit-scrollbar-thumb {\n     background-color: #03202e;    \n     border-radius: 20px;       \n     border: 3px solid white;\n}\n.erro[data-v-4aaaf25e]{\n     color: red;\n     position: absolute;\n     font-size: 14px;\n     top:70px;\n     left: 40px;\n     z-index: 8;\n}\n.displayCidadeclass[data-v-4aaaf25e]{\n      border-bottom-right-radius: 0px !important;\n     border-bottom-left-radius: 0px !important;\n     border-bottom:0px solid white !important;\n}\n.displayUFclass[data-v-4aaaf25e]{\n     border-bottom-right-radius: 0px !important;\n     border-bottom-left-radius: 0px !important;\n     border-bottom:0px solid white !important;\n}\n.listauf[data-v-4aaaf25e]{\n     position: absolute;\n     top: 53px;\n     z-index: 10;\n     width: calc(100% - 1.5px);\n     height: 250px;\n     overflow-y: scroll;\n     background-color: white;\n     border-bottom: 1px solid rgba(0, 0, 0, 0.3);\n     border-left: 1px solid rgba(0, 0, 0, 0.3);\n     border-right: 1px solid rgba(0, 0, 0, 0.3);\n}\n.listauf li[data-v-4aaaf25e]{\n     font-size: 15px;\n     color: rgba(0, 0, 0, 0.75);\n     list-style: none;\n     padding: 6px;\n     padding-left: 20px;\n}\n.listauf li[data-v-4aaaf25e]:hover{\n     background-color: rgb(0, 162, 255);\n}\n.listacidade[data-v-4aaaf25e]{\n     position: absolute;\n     top:55px;\n     z-index: 10;\n     width: calc(100% - 1.5px);\n     height: 250px;\n     overflow:scroll;\n     background-color: white;\n     border-bottom: 1px solid rgba(0, 0, 0, 0.3);\n     border-left: 1px solid rgba(0, 0, 0, 0.3);\n     border-right: 1px solid rgba(0, 0, 0, 0.3);\n}\n.listacidade li[data-v-4aaaf25e]{\n     font-size: 15px;\n     color: rgba(0, 0, 0, 0.75);\n     list-style: none;\n     padding: 6px;\n     padding-left: 20px;\n}\n.listacidade li[data-v-4aaaf25e]:hover{\n     background-color: rgb(0, 162, 255);\n}\n /* fieldset{\n     color: rgba(0, 0, 0, 0.103);\n }\n \n .input{\n     border: 1px solid rgb(0 0 0 / 26%) !important;\n     margin: 10px !important;\n }\n input{\n     font-size: 15px;\n     height: 23px !important;\n }\n .form{\n     display: flex;\n     flex-wrap: wrap;\n     max-width: 1280px;\n     width: 100%;\n\n     margin: 40px auto;\n }\n .cep{\n     position: relative;\n     max-width: 250px;\n     width: 100%;\n }\n .cep input{\n    position: absolute;\n    left: 20px;\n }\n .cep i{\n     position: absolute;\n     display: flex;\n     justify-content: center;\n     align-items: center;\n     top:-9px;\n     right: -5px;\n     background-color: white;\n     width: 50px;\n     height: 47px;\n     border-radius: 0 25px  25px 0;\n     border-top: 1px solid rgba(0, 0, 0, 0.30) !important;        \n     border-bottom: 1px solid rgba(0, 0, 0, 0.30) !important;        \n     border-right: 1px solid rgba(0, 0, 0, 0.305) !important;  \n }\n .uf{\n     max-width: 150px;\n     width: calc(100% - 35px);\n }\n .uf input {\n     max-width: 65px;\n     position: absolute;\n     left: 20px;       \n }\n .input i {\n     position: absolute;\n     display: flex;\n     justify-content: center;\n     align-items: center;\n     width: 46px;\n     height: 41px;\n     top: -11px;\n     right: -1px;\n     background-color: rgb(255, 255, 255);\n     border-radius: 0 25px 25px 0;\n     border-top: 1px solid #0000003a;\n     border-right: 1px solid #0000003a;\n     border-bottom: 1px solid #0000003a;\n   }\n .uf i svg{\n     fill: rgba(0, 0, 0, 0.73);\n }\n .cep i svg{\n     fill: rgba(0, 0, 0, 0.73);\n }\n .uf-relativ{\n      position: relative;\n     display: flex;\n     justify-content: center;\n }\n\n .cidade-relativ{\n     width: 100%;\n     position: relative;\n     display: flex;\n     justify-content: center;\n }\n .cl-dis{\n     flex: 0 0  43.7%;\n     max-width: 42.8666666%;\n }\n \n .div-block{\n     max-width: 1280px;\n     width: 100%;\n     display: flex;\n     justify-content: flex-start;\n\n     margin-top:10px ;\n }\n .mr-3{\n     margin-bottom: 10px;\n }\n legend{\n     margin-left: 20px;\n     color: rgba(0, 0, 0, 1);\n     font-size: 14px;\n }\n .input {\n     height: 35px;\n     border: 1px solid rgba(0, 0, 0, 0.74);\n     border-top-right-radius: 25px;\n     border-top-left-radius: 25px;\n     border-bottom-right-radius: 25px;\n     border-bottom-left-radius: 25px;\n     padding: 8px;\n     background-color: none;\n     display: flex;\n     align-items: flex-end;\n     justify-content: center;\n }\n .div-block h5{\n     font-size: 21px;\n     color: rgba(0, 0, 0, 0.85);\n     font-weight: 500;\n } */\n\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.erro[data-v-4aaaf25e]{\n     color: red;\n     position: absolute;\n     font-size: 14px;\n     top:70px;\n     left: 40px;\n     z-index: 8;\n}\n.displayCidadeclass[data-v-4aaaf25e]{\n      border-bottom-right-radius: 0px !important;\n     border-bottom-left-radius: 0px !important;\n     border-bottom:0px solid white !important;\n}\n.displayUFclass[data-v-4aaaf25e]{\n     border-bottom-right-radius: 0px !important;\n     border-bottom-left-radius: 0px !important;\n     border-bottom:0px solid white !important;\n}\n.listauf[data-v-4aaaf25e]{\n     position: absolute;\n     top: 53px;\n     z-index: 10;\n     width: calc(100% - 1.5px);\n     height: 250px;\n     overflow-y: scroll;\n     background-color: white;\n     border-bottom: 1px solid rgba(0, 0, 0, 0.3);\n     border-left: 1px solid rgba(0, 0, 0, 0.3);\n     border-right: 1px solid rgba(0, 0, 0, 0.3);\n}\n.listauf li[data-v-4aaaf25e]{\n     font-size: 15px;\n     color: rgba(0, 0, 0, 0.75);\n     list-style: none;\n     padding: 6px;\n     padding-left: 20px;\n}\n.listauf li[data-v-4aaaf25e]:hover{\n     background-color: rgb(0, 162, 255);\n}\n.listacidade[data-v-4aaaf25e]{\n     position: absolute;\n     top:55px;\n     z-index: 10;\n     width: calc(100% - 1.5px);\n     height: 250px;\n     overflow:scroll;\n     background-color: white;\n     border-bottom: 1px solid rgba(0, 0, 0, 0.3);\n     border-left: 1px solid rgba(0, 0, 0, 0.3);\n     border-right: 1px solid rgba(0, 0, 0, 0.3);\n}\n.listacidade li[data-v-4aaaf25e]{\n     font-size: 15px;\n     color: rgba(0, 0, 0, 0.75);\n     list-style: none;\n     padding: 6px;\n     padding-left: 20px;\n}\n.listacidade li[data-v-4aaaf25e]:hover{\n     background-color: rgb(0, 162, 255);\n}\n /* fieldset{\n     color: rgba(0, 0, 0, 0.103);\n }\n \n .input{\n     border: 1px solid rgb(0 0 0 / 26%) !important;\n     margin: 10px !important;\n }\n input{\n     font-size: 15px;\n     height: 23px !important;\n }\n .form{\n     display: flex;\n     flex-wrap: wrap;\n     max-width: 1280px;\n     width: 100%;\n\n     margin: 40px auto;\n }\n .cep{\n     position: relative;\n     max-width: 250px;\n     width: 100%;\n }\n .cep input{\n    position: absolute;\n    left: 20px;\n }\n .cep i{\n     position: absolute;\n     display: flex;\n     justify-content: center;\n     align-items: center;\n     top:-9px;\n     right: -5px;\n     background-color: white;\n     width: 50px;\n     height: 47px;\n     border-radius: 0 25px  25px 0;\n     border-top: 1px solid rgba(0, 0, 0, 0.30) !important;        \n     border-bottom: 1px solid rgba(0, 0, 0, 0.30) !important;        \n     border-right: 1px solid rgba(0, 0, 0, 0.305) !important;  \n }\n .uf{\n     max-width: 150px;\n     width: calc(100% - 35px);\n }\n .uf input {\n     max-width: 65px;\n     position: absolute;\n     left: 20px;       \n }\n .input i {\n     position: absolute;\n     display: flex;\n     justify-content: center;\n     align-items: center;\n     width: 46px;\n     height: 41px;\n     top: -11px;\n     right: -1px;\n     background-color: rgb(255, 255, 255);\n     border-radius: 0 25px 25px 0;\n     border-top: 1px solid #0000003a;\n     border-right: 1px solid #0000003a;\n     border-bottom: 1px solid #0000003a;\n   }\n .uf i svg{\n     fill: rgba(0, 0, 0, 0.73);\n }\n .cep i svg{\n     fill: rgba(0, 0, 0, 0.73);\n }\n .uf-relativ{\n      position: relative;\n     display: flex;\n     justify-content: center;\n }\n\n .cidade-relativ{\n     width: 100%;\n     position: relative;\n     display: flex;\n     justify-content: center;\n }\n .cl-dis{\n     flex: 0 0  43.7%;\n     max-width: 42.8666666%;\n }\n \n .div-block{\n     max-width: 1280px;\n     width: 100%;\n     display: flex;\n     justify-content: flex-start;\n\n     margin-top:10px ;\n }\n .mr-3{\n     margin-bottom: 10px;\n }\n legend{\n     margin-left: 20px;\n     color: rgba(0, 0, 0, 1);\n     font-size: 14px;\n }\n .input {\n     height: 35px;\n     border: 1px solid rgba(0, 0, 0, 0.74);\n     border-top-right-radius: 25px;\n     border-top-left-radius: 25px;\n     border-bottom-right-radius: 25px;\n     border-bottom-left-radius: 25px;\n     padding: 8px;\n     background-color: none;\n     display: flex;\n     align-items: flex-end;\n     justify-content: center;\n }\n .div-block h5{\n     font-size: 21px;\n     color: rgba(0, 0, 0, 0.85);\n     font-weight: 500;\n } */\n\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -12027,7 +12073,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.component-editar[data-v-2dfb8ad2]{\n    display: flex;\n    position: absolute; \n    left: 0px;\n    width: 100%;\n    height: 100%;\n    overflow-y: hidden;\n    overflow-x: hidden;\n    z-index: 1000;\n}\n.editheader h5[data-v-2dfb8ad2]{\n        font-size: 25px;\n        font-weight: 400;\n        color: white;\n}\n.editheader span[data-v-2dfb8ad2]{\n        color: white;\n}\n.editbody[data-v-2dfb8ad2]{  \n        flex-direction: column;\n}\n.div-flex[data-v-2dfb8ad2]{\n        margin: 1rem 1.5rem ;\n        display: flex;\n        max-width: 450px;\n        width: 100%;\n        flex-wrap: wrap;\n        -moz-column-gap: 1rem;\n             column-gap: 1rem;\n        justify-content: flex-start;\n}\n.cl-7[data-v-2dfb8ad2]{\n        max-width: 400px;\n        width: 100%;\n}\n.div-flex-footer[data-v-2dfb8ad2]{\n        display: flex;\n        justify-self: flex-end;\n        width: 100%;\n        flex-wrap: wrap;\n        -moz-column-gap: 1rem;\n             column-gap: 1rem;\n        justify-content: flex-start;\n        background-color: white;\n        box-shadow: 0 0 5px #ccc;\n}\n.btns[data-v-2dfb8ad2]{\n        display: flex;\n        margin: 1rem 1.5rem ;\n        max-width: 450px;\n        width: calc(100% - 40px);\n        justify-content: space-between;\n}\n.btns button[data-v-2dfb8ad2]{\n        background-color: #009cf7;\n        width: 195px;\n        height: 45px;\n        border-radius: 25px;\n        color: white;\n        font-size: 16px;\n}\ninput[data-v-2dfb8ad2]{\n        text-align: end;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.component-editar[data-v-2dfb8ad2]{\n    display: flex;\n    position: fixed;\n    left: 0px;\n    width: 100%;\n    height: 100%;\n    overflow-y: hidden;\n    overflow-x: hidden;\n    z-index: 1000;\n    top: 0;\n}\n.editheader h5[data-v-2dfb8ad2]{\n    font-size: 25px;\n    font-weight: 400;\n    color: white;\n}\n.editheader span[data-v-2dfb8ad2]{\n    color: white;\n}\n.editbody[data-v-2dfb8ad2]{  \n    flex-direction: column;\n}\n.div-flex[data-v-2dfb8ad2]{\n    margin: 1rem 1.5rem ;\n    display: flex;\n    max-width: 450px;\n    width: 100%;\n    flex-wrap: wrap;\n    -moz-column-gap: 1rem;\n         column-gap: 1rem;\n    justify-content: flex-start;\n}\n.cl-7[data-v-2dfb8ad2]{\n    max-width: 400px;\n    width: 100%;\n}\n.div-flex-footer[data-v-2dfb8ad2]{\n    display: flex;\n    justify-self: flex-end;\n    width: 100%;\n    flex-wrap: wrap;\n    -moz-column-gap: 1rem;\n         column-gap: 1rem;\n    justify-content: flex-start;\n    background-color: white;\n    box-shadow: 0 0 5px #ccc;\n}\n.btns[data-v-2dfb8ad2]{\n    display: flex;\n    margin: 1rem 1.5rem ;\n    max-width: 450px;\n    width: calc(100% - 40px);\n    justify-content: space-between;\n}\n.btns button[data-v-2dfb8ad2]{\n    background-color: #009cf7;\n    width: 195px;\n    height: 45px;\n    border-radius: 25px;\n    color: white;\n    font-size: 16px;\n}\ninput[data-v-2dfb8ad2]{\n    text-align: end;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -12100,6 +12146,30 @@ __webpack_require__.r(__webpack_exports__);
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
 ___CSS_LOADER_EXPORT___.push([module.id, "\nfieldset[data-v-60e86090]{\n    position: relative;\n   margin: 0 1rem;\n    height: 35px;\n    left: 0px;\n    top:0px;\n}\nfieldset input[data-v-60e86090]{\n    position: absolute;\n    top: 4.5px;\n    height: 25px;\n    text-align: end;\n}\n.td-left[data-v-60e86090]{\n    display: flex;\n    margin: 1rem;\n}\n", ""]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/tabela/DadosTabela.vue?vue&type=style&index=0&id=605ae4b1&scoped=true&lang=css&":
+/*!*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/tabela/DadosTabela.vue?vue&type=style&index=0&id=605ae4b1&scoped=true&lang=css& ***!
+  \*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__);
+// Imports
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, "\n.opcoes[data-v-605ae4b1]{\n    position: relative;\n}\n.opcoes div[data-v-605ae4b1]{\n    position: absolute;\n    background-color: wheat;\n    top: 5px;\n    width: 100px;\n    height: 50px;\n}\n\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -30143,6 +30213,36 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/tabela/DadosTabela.vue?vue&type=style&index=0&id=605ae4b1&scoped=true&lang=css&":
+/*!*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/tabela/DadosTabela.vue?vue&type=style&index=0&id=605ae4b1&scoped=true&lang=css& ***!
+  \*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_DadosTabela_vue_vue_type_style_index_0_id_605ae4b1_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./DadosTabela.vue?vue&type=style&index=0&id=605ae4b1&scoped=true&lang=css& */ "./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/tabela/DadosTabela.vue?vue&type=style&index=0&id=605ae4b1&scoped=true&lang=css&");
+
+            
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_DadosTabela_vue_vue_type_style_index_0_id_605ae4b1_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"], options);
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_DadosTabela_vue_vue_type_style_index_0_id_605ae4b1_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js":
 /*!****************************************************************************!*\
   !*** ./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js ***!
@@ -31501,23 +31601,25 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _DadosTabela_vue_vue_type_template_id_605ae4b1___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./DadosTabela.vue?vue&type=template&id=605ae4b1& */ "./resources/js/components/tabela/DadosTabela.vue?vue&type=template&id=605ae4b1&");
+/* harmony import */ var _DadosTabela_vue_vue_type_template_id_605ae4b1_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./DadosTabela.vue?vue&type=template&id=605ae4b1&scoped=true& */ "./resources/js/components/tabela/DadosTabela.vue?vue&type=template&id=605ae4b1&scoped=true&");
 /* harmony import */ var _DadosTabela_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./DadosTabela.vue?vue&type=script&lang=js& */ "./resources/js/components/tabela/DadosTabela.vue?vue&type=script&lang=js&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* harmony import */ var _DadosTabela_vue_vue_type_style_index_0_id_605ae4b1_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./DadosTabela.vue?vue&type=style&index=0&id=605ae4b1&scoped=true&lang=css& */ "./resources/js/components/tabela/DadosTabela.vue?vue&type=style&index=0&id=605ae4b1&scoped=true&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
+;
 
 
 /* normalize component */
-;
-var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
   _DadosTabela_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _DadosTabela_vue_vue_type_template_id_605ae4b1___WEBPACK_IMPORTED_MODULE_0__.render,
-  _DadosTabela_vue_vue_type_template_id_605ae4b1___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  _DadosTabela_vue_vue_type_template_id_605ae4b1_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render,
+  _DadosTabela_vue_vue_type_template_id_605ae4b1_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
   false,
   null,
-  null,
+  "605ae4b1",
   null
   
 )
@@ -31844,6 +31946,19 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/tabela/DadosTabela.vue?vue&type=style&index=0&id=605ae4b1&scoped=true&lang=css&":
+/*!*****************************************************************************************************************!*\
+  !*** ./resources/js/components/tabela/DadosTabela.vue?vue&type=style&index=0&id=605ae4b1&scoped=true&lang=css& ***!
+  \*****************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_DadosTabela_vue_vue_type_style_index_0_id_605ae4b1_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader/dist/cjs.js!../../../../node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./DadosTabela.vue?vue&type=style&index=0&id=605ae4b1&scoped=true&lang=css& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/tabela/DadosTabela.vue?vue&type=style&index=0&id=605ae4b1&scoped=true&lang=css&");
+
+
+/***/ }),
+
 /***/ "./resources/js/components/cliente/CadastroCliente.vue?vue&type=template&id=4aaaf25e&scoped=true&":
 /*!********************************************************************************************************!*\
   !*** ./resources/js/components/cliente/CadastroCliente.vue?vue&type=template&id=4aaaf25e&scoped=true& ***!
@@ -32065,19 +32180,19 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/tabela/DadosTabela.vue?vue&type=template&id=605ae4b1&":
-/*!***************************************************************************************!*\
-  !*** ./resources/js/components/tabela/DadosTabela.vue?vue&type=template&id=605ae4b1& ***!
-  \***************************************************************************************/
+/***/ "./resources/js/components/tabela/DadosTabela.vue?vue&type=template&id=605ae4b1&scoped=true&":
+/*!***************************************************************************************************!*\
+  !*** ./resources/js/components/tabela/DadosTabela.vue?vue&type=template&id=605ae4b1&scoped=true& ***!
+  \***************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DadosTabela_vue_vue_type_template_id_605ae4b1___WEBPACK_IMPORTED_MODULE_0__.render),
-/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DadosTabela_vue_vue_type_template_id_605ae4b1___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DadosTabela_vue_vue_type_template_id_605ae4b1_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DadosTabela_vue_vue_type_template_id_605ae4b1_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DadosTabela_vue_vue_type_template_id_605ae4b1___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./DadosTabela.vue?vue&type=template&id=605ae4b1& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/tabela/DadosTabela.vue?vue&type=template&id=605ae4b1&");
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DadosTabela_vue_vue_type_template_id_605ae4b1_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./DadosTabela.vue?vue&type=template&id=605ae4b1&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/tabela/DadosTabela.vue?vue&type=template&id=605ae4b1&scoped=true&");
 
 
 /***/ }),
@@ -32818,6 +32933,7 @@ var render = function () {
               attrs: { type: "date", name: "data", id: "data" },
               domProps: { value: _vm.data },
               on: {
+                blur: _vm.setData,
                 input: function ($event) {
                   if ($event.target.composing) {
                     return
@@ -32849,14 +32965,14 @@ var render = function () {
                 {
                   name: "model",
                   rawName: "v-model",
-                  value: _vm.cnpjcpfCliente.cnpjcpf,
-                  expression: "cnpjcpfCliente.cnpjcpf",
+                  value: _vm.dadosCliente.cnpjcpf,
+                  expression: "dadosCliente.cnpjcpf",
                 },
                 {
                   name: "mask",
                   rawName: "v-mask",
-                  value: _vm.cnpjcpfCliente.mask,
-                  expression: "cnpjcpfCliente.mask",
+                  value: _vm.dadosCliente.mask,
+                  expression: "dadosCliente.mask",
                 },
               ],
               attrs: {
@@ -32865,13 +32981,13 @@ var render = function () {
                 name: "cnpjcpf",
                 id: "cnpjcpf",
               },
-              domProps: { value: _vm.cnpjcpfCliente.cnpjcpf },
+              domProps: { value: _vm.dadosCliente.cnpjcpf },
               on: {
                 input: function ($event) {
                   if ($event.target.composing) {
                     return
                   }
-                  _vm.$set(_vm.cnpjcpfCliente, "cnpjcpf", $event.target.value)
+                  _vm.$set(_vm.dadosCliente, "cnpjcpf", $event.target.value)
                 },
               },
             }),
@@ -32896,6 +33012,7 @@ var render = function () {
             attrs: { type: "text", name: "email", id: "email" },
             domProps: { value: _vm.email },
             on: {
+              blur: _vm.setEmail,
               input: function ($event) {
                 if ($event.target.composing) {
                   return
@@ -35170,10 +35287,10 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/tabela/DadosTabela.vue?vue&type=template&id=605ae4b1&":
-/*!******************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/tabela/DadosTabela.vue?vue&type=template&id=605ae4b1& ***!
-  \******************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/tabela/DadosTabela.vue?vue&type=template&id=605ae4b1&scoped=true&":
+/*!******************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/tabela/DadosTabela.vue?vue&type=template&id=605ae4b1&scoped=true& ***!
+  \******************************************************************************************************************************************************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -35188,32 +35305,46 @@ var render = function () {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "component" }, [
     _c("div", { staticClass: "consulta-table" }, [
-      _c("fieldset", { staticClass: "cl-2" }, [
-        _vm._m(0),
-        _vm._v(" "),
-        _c("input", {
+      _c(
+        "fieldset",
+        {
           directives: [
             {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.pesquisa,
-              expression: "pesquisa",
+              name: "show",
+              rawName: "v-show",
+              value: _vm.vshow,
+              expression: "vshow",
             },
           ],
-          staticClass: "div-absolut",
-          attrs: { type: "text", name: "pesquisa", id: "pesquisa" },
-          domProps: { value: _vm.pesquisa },
-          on: {
-            keyup: _vm.pesquisadados,
-            input: function ($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.pesquisa = $event.target.value
+          staticClass: "cl-2",
+        },
+        [
+          _vm._m(0),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.pesquisa,
+                expression: "pesquisa",
+              },
+            ],
+            staticClass: "div-absolut",
+            attrs: { type: "text", name: "pesquisa", id: "pesquisa" },
+            domProps: { value: _vm.pesquisa },
+            on: {
+              keyup: _vm.pesquisadados,
+              input: function ($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.pesquisa = $event.target.value
+              },
             },
-          },
-        }),
-      ]),
+          }),
+        ]
+      ),
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "div-tabela" }, [
@@ -35323,16 +35454,113 @@ var render = function () {
               _vm._v(" "),
               _c("td", [_vm._v(_vm._s(dados.campo2))]),
               _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(Number(dados.campo3)))]),
+              _c("td", [_vm._v(_vm._s(dados.campo3))]),
               _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(Number(dados.campo4)))]),
+              _c("td", [_vm._v(_vm._s(dados.campo4))]),
               _vm._v(" "),
               _c("td", [_vm._v(_vm._s(dados.campo5))]),
               _vm._v(" "),
               _c("td", [_vm._v(_vm._s(dados.campo6))]),
               _vm._v(" "),
+              _c("td", [_vm._v(_vm._s(dados.campo7))]),
+              _vm._v(" "),
               _c("td", { staticClass: "borda-left" }, [
-                _vm._v(" " + _vm._s(dados.campo7)),
+                _c(
+                  "span",
+                  {
+                    on: {
+                      click: function ($event) {
+                        return _vm.edit(dados.campo1)
+                      },
+                    },
+                  },
+                  [
+                    _c(
+                      "svg",
+                      {
+                        attrs: {
+                          width: "18px",
+                          height: "18px",
+                          viewBox: "0 0 4233 4233",
+                        },
+                      },
+                      [
+                        _c("g", { attrs: { id: "Camada_x0020_1" } }, [
+                          _c("g", { attrs: { id: "_1913567360560" } }, [
+                            _c("path", {
+                              staticClass: "fill-blue",
+                              attrs: {
+                                d: "M454 4233l2721 0c251,0 454,-203 454,-453l0 -1512c0,-84 -68,-151 -152,-151 -83,0 -151,67 -151,151l0 1512c0,83 -67,151 -151,151l-2721 0c-84,0 -152,-68 -152,-151l0 -3024c0,-84 68,-151 152,-151l1814 0c83,0 151,-68 151,-151 0,-84 -68,-152 -151,-152l-1814 0c-251,0 -454,203 -454,454l0 3024c0,250 203,453 454,453z",
+                              },
+                            }),
+                            _c("path", {
+                              staticClass: "fill-blue",
+                              attrs: {
+                                d: "M3850 774l-1965 1966 -588 196 196 -586 1966 -1966c108,-108 283,-108 391,0 52,52 81,122 81,195 0,73 -29,144 -81,195zm383 -193l0 -5c0,-147 -57,-294 -169,-406 -109,-109 -256,-170 -409,-170 -154,0 -301,61 -410,170l-1991 1991c-17,17 -29,37 -37,59l-302 907c-26,79 16,165 96,191 15,6 31,8 47,8 17,0 33,-2 48,-8l907 -302c23,-7 43,-20 59,-36l1992 -1992c112,-112 169,-259 169,-407z",
+                              },
+                            }),
+                          ]),
+                        ]),
+                      ]
+                    ),
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "span",
+                  {
+                    staticClass: "status",
+                    on: {
+                      click: function ($event) {
+                        return _vm.status(dados.campo1)
+                      },
+                    },
+                  },
+                  [
+                    _c(
+                      "svg",
+                      {
+                        attrs: {
+                          width: "18px",
+                          height: "18px",
+                          viewBox: "0 0 443 357",
+                        },
+                      },
+                      [
+                        _c("rect", {
+                          staticClass: "fill-blue",
+                          attrs: { width: "443", height: "32.86" },
+                        }),
+                        _vm._v(" "),
+                        _c("rect", {
+                          staticClass: "fill-blue",
+                          attrs: { y: "324", width: "443", height: "32.86" },
+                        }),
+                        _vm._v(" "),
+                        _c("rect", {
+                          staticClass: "fill-blue",
+                          attrs: { y: "162", width: "443", height: "32.86" },
+                        }),
+                      ]
+                    ),
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.display == dados.campo1,
+                        expression: "display == dados.campo1",
+                      },
+                    ],
+                    staticClass: "opcoes",
+                  },
+                  [_c("div")]
+                ),
               ]),
             ])
           }),

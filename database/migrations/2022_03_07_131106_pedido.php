@@ -20,7 +20,6 @@ class Pedido extends Migration
             $table->string('email', 50)->nullable();
             $table->string('situacao', 20);
             $table->date('previsaoentrega')->nullable();
-            $table->decimal('totalpedido', 15,2)->default(0.00);
             $table->timestamps();
         });
     }

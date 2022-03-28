@@ -77,16 +77,17 @@ export default {
 }
 </script>
 <style scoped>
-.component-editar{
-    display: flex;
-    position: absolute; 
-    left: 0px;
-    width: 100%;
-    height: 100%;
-    overflow-y: hidden;
-    overflow-x: hidden;
-    z-index: 1000;
-}
+    .component-editar{
+        display: flex;
+        position: fixed;
+        left: 0px;
+        width: 100%;
+        height: 100%;
+        overflow-y: hidden;
+        overflow-x: hidden;
+        z-index: 1000;
+        top: 0;
+    }
     .editheader h5{
         font-size: 25px;
         font-weight: 400;

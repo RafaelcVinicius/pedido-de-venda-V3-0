@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import axios from 'axios'
 
 Vue.use(Vuex)
 
@@ -30,12 +29,14 @@ export default new Vuex.Store({
 
             //estrutura do pedido
         dadosPedido:{
+            idPedido:0,
+            email:'',
+            previsaoEntrega:'',
+            status:'Aberto',
             vendedor:{
                 nome:'',
                 id:'',
             },
-            previsaoEntrega:'',
-            status:'Aberto',
             cliente:{
                 id:'',
                 nome:'',
@@ -58,7 +59,8 @@ export default new Vuex.Store({
     },
     getters: {
         cnpjcpfCliente(state){  
-            var obj = {};  
+            var obj = {}; 
+
             obj.cnpjcpf = state.dadosPedido.cliente.cnpjcpf       
             if( state.dadosPedido.cliente.cnpjcpf.length > 11){    
                 obj.mask = '##.###.###/####-##'
@@ -167,11 +169,11 @@ export default new Vuex.Store({
             state.dadosPedido.formasDePagamento = payload
         },
         gravarPedido(state, payload){
+            console.log('ff')
             var obj = {}
-            obj = state.dadosPedido
-
-            axios.http.post('home/pedido/gravar', {obj}).then(res => {console.log(res)})
-
+            obj = state.dadosPedido            
+            axios.post(window.location.href.split('/')[0] + '//' + window.location.hostname+':8000' + '/home/pedido/gravar', {data:obj}).then(response => {response})
+            window.location.href = 'http://localhost:8000/home/pedido'
         }
     },
     actions:{

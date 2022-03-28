@@ -33,8 +33,8 @@ export default {
         viewEditProduto(){
            if(this.$store.state.displayEditarProduto === true){
                 window.document.body.style =  'overflow:hidden;'
-                var topstyle = window.window.scrollY
-                window.document.getElementById('editarcom').style = 'top:'+topstyle+'px;'
+                // var topstyle = window.window.scrollY
+                // window.document.getElementById('editarcom').style = 'top:'+topstyle+'px;'
                 
             }else{
                 window.document.body.style =  ''

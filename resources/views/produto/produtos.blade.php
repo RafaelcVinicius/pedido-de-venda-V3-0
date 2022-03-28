@@ -14,6 +14,7 @@
             <div class="corpo-box">
                 <dados-tabela
                 :url="'produtos'" 
+                :vshow="true"
                 >
                     <th><p slot="thead-1">ID</p></th>
                     <th><p slot="thead-2">Nome</p></th>

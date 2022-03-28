@@ -15,7 +15,7 @@ class Itempedido extends Migration
     {
         Schema::create('itempedido', function (Blueprint $table) {
             $table->id();
-            $table->integer('id_venda');
+            $table->integer('id_pedido');
             $table->integer('id_produto')->references('id')->on('produtos');
             $table->decimal('valor',15,2);
             $table->decimal('qtde', 15,2);

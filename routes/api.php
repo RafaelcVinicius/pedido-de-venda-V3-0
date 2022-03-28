@@ -35,3 +35,5 @@ route::post('consultacidadesuf', [ApiController::class, 'consultacidadesuf'])->n
 
 Route::get('consultaaplicaca', [ApiController::class, 'consultaAplicaca'])->name('consultaaplicaca');
 Route::get('consultaun', [ApiController::class, 'consultaUn'])->name('consultaun');
+
+Route::get('pedido', [ApiController::class, 'pedido'])->name('pedido');

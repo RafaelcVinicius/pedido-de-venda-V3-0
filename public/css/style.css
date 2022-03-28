@@ -4,6 +4,21 @@
     padding: 0;
     border: 0;
 }
+::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: #F1F1F1;     
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #0d9eff;    
+
+}
+
+
 body{
     display: flex;
     flex-direction: column;
@@ -318,12 +333,13 @@ table{
 }
 .borda-left{
     border-left:1px solid #00ccff94;
+    width: 120px;
 }
 .borda-left span{
     cursor: pointer;
 }
 .borda-left span svg{
-    width: 30px;
+    width: 35px;
     fill: #00a2ff;
 }
 .lista{
@@ -386,4 +402,7 @@ table{
     outline: 0;
     font-size: 14px;
 
+}
+.status svg{
+    width:18px !important
 }

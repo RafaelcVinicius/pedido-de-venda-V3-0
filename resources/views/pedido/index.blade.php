@@ -13,14 +13,17 @@
             </div>           
             <div class="corpo-box">
                 <dados-tabela
-                :url="'pedidos'" 
+                :url="'pedido'" 
+                :vshow="false"
+                :editurl="{{json_encode(route('pedido.edit', '_ID_'))}}"
+                
                 >
                     <th><p slot="thead-1">ID</p></th>
-                    <th><p slot="thead-2">Nome</p></th>
-                    <th><p slot="thead-3">Código de Barras</p></th>
-                    <th><p slot="thead-4">Referencia</p></th>
-                    <th><p slot="thead-5">Preço de Venda</p></th>
-                    <th><p slot="thead-6">Qtde atual</p></th>
+                    <th><p slot="thead-2">Cliente</p></th>
+                    <th><p slot="thead-3">Previsão entrega</p></th>
+                    <th><p slot="thead-4">Situção</p></th>
+                    <th><p slot="thead-5"></p></th>
+                    <th><p slot="thead-6"></p></th>
                     <th><p slot="thead-7"></p></th>
                 <dados-tabela />
             </div>        
