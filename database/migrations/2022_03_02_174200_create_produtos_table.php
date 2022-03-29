@@ -24,6 +24,7 @@ class CreateProdutosTable extends Migration
             $table->decimal('precovenda', 16,2);
             $table->decimal('porclucro', 16,2);
             $table->decimal('qtde', 16,2);
+            $table->string('ativo', 5);
             $table->timestamps();
         });
     }

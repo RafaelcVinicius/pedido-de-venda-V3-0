@@ -38,10 +38,11 @@ class ClienteController extends Controller
     public function store(Request $request)
     {
         $dados = new Clientes();
-        $dados->nome = $request->nome;
-        $dados->cnpjcpf = str_replace(',' , '', str_replace('.' ,'' , str_replace('-' , '' ,$request->cnpjcpf)));
-        $dados->telefone = str_replace('(' , '', str_replace(')' ,'' , str_replace('-' , '' ,str_replace(' ' , '' ,$request->telefone))));
-        $dados->email = $request->email;
+        $dados->nome       = $request->nome;
+        $dados->cnpjcpf    = str_replace(',' , '', str_replace('.' ,'' , str_replace('-' , '' ,$request->cnpjcpf)));
+        $dados->telefone   = str_replace('(' , '', str_replace(')' ,'' , str_replace('-' , '' ,str_replace(' ' , '' ,$request->telefone))));
+        $dados->email      = $request->email;
+        $dados->ativo      = 'true';
         $dados->save();
 
         $dadosendereco = new Enderecocliente();
@@ -89,7 +90,14 @@ class ClienteController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        if($request->status){
+            $dados =  Clientes::find($id);
+            $dados->ativo = $request->ativo;
+            $dados->save();
+
+        }else{
+
+        }
     }
 
     /**

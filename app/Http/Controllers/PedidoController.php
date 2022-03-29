@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\PedidoResource;
 use App\Models\Formadepagamento;
 use App\Models\Itempedido;
 use App\Models\Pedido;
 use Illuminate\Http\Request;
+use stdClass;
+use Dompdf\Adapter\CPDF;
+use Dompdf\Dompdf;
+use PDF;
 
 class PedidoController extends Controller
 {
@@ -64,7 +69,7 @@ class PedidoController extends Controller
 
             foreach($data['itens'] as $item){
                 $pedidoitem = new Itempedido();
-                $pedidoitem->id_pedido        = $pedido->id;
+                $pedidoitem->id_pedido       = $pedido->id;
                 $pedidoitem->id_produto      = $item['id'];
                 $pedidoitem->valor           = $item['valor'];
                 $pedidoitem->percdesconto    = $item['desconto'];
@@ -118,8 +123,26 @@ class PedidoController extends Controller
 
     }
 
-    public function edit(){
-        return View('pedido.editar');
+    public function edit($id){
+        $resource = Pedido::findOrFail($id);
+        $resource = new PedidoResource($resource);
+        $dados = Pedido::find($id);
+        // dd(json_encode($resource));
+        return view('pedido.editar')->with('vendedor', $dados)->with('resource', $resource );
+
     }
 
+    public function status(Request $request, $id){
+        $dados = Pedido::find($id);
+        $dados->situacao = $request->situacao;
+        $dados->save();
+    }
+
+    public function pdf($id){
+        $dados = new stdClass();
+        $dados = Pedido::find($id);
+
+        // dd($dados->TotalPedido);
+        return PDF::loadView('pdf.pedido', compact('dados'))->setPaper('a4', 'portrait')->stream('Pedido'.$id.'.pdf');
+    }
 }

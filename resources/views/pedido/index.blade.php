@@ -16,6 +16,7 @@
                 :url="'pedido'" 
                 :vshow="false"
                 :editurl="{{json_encode(route('pedido.edit', '_ID_'))}}"
+                :pdf="{{json_encode(route('pedido.pdf', '_ID_'))}}"
                 
                 >
                     <th><p slot="thead-1">ID</p></th>

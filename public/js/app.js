@@ -5481,7 +5481,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     vendedor: String,
-    idvendedor: Number
+    idvendedor: Number,
+    dadospedido: Object
   },
   data: function data() {
     return {};
@@ -5512,6 +5513,15 @@ __webpack_require__.r(__webpack_exports__);
       nome: this.vendedor,
       id: this.idvendedor
     });
+
+    if (this.dadospedido != null) {
+      this.$store.state.dadosPedido = this.dadospedido;
+
+      if (this.dadospedido.itens == null) {} else {
+        this.$store.state.displayProduto = true;
+        this.$store.state.displayDetalhesPedido = true;
+      }
+    }
   }
 });
 
@@ -6050,6 +6060,7 @@ __webpack_require__.r(__webpack_exports__);
       this.$store.commit('delProduto', i);
     },
     editProduto: function editProduto(i) {
+      console.log(this.$store.state.dadosPedido);
       this.$store.dispatch('alterarProduto', i);
     }
   },
@@ -6509,6 +6520,23 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
@@ -6517,7 +6545,8 @@ __webpack_require__.r(__webpack_exports__);
   props: {
     url: String,
     vshow: Boolean,
-    editurl: String
+    editurl: String,
+    pdf: String
   },
   data: function data() {
     return {
@@ -6547,8 +6576,10 @@ __webpack_require__.r(__webpack_exports__);
         _this2.$store.commit('addRegistroTabela', res.data);
       });
     },
-    edit: function edit(id) {
-      window.location.href = this.editurl.replace('_ID_', id);
+    edit: function edit(dados) {
+      if (dados.campo4 != 'Finalizado' && dados.campo4 != 'Cancelado') {
+        window.location.href = this.editurl.replace('_ID_', dados.campo1);
+      }
     },
     status: function status(id) {
       if (this.display == id) {
@@ -6556,6 +6587,55 @@ __webpack_require__.r(__webpack_exports__);
       } else {
         this.display = id;
       }
+    },
+    cancelar: function cancelar() {
+      var _this3 = this;
+
+      this.$http.put('home/pedido/' + this.display + '/status/', {
+        situacao: 'Cancelado'
+      }).then(function (res) {
+        _this3.$http.get('/api/' + _this3.url).then(function (res) {
+          _this3.$store.commit('addRegistroTabela', res.data);
+        });
+      });
+    },
+    finalizar: function finalizar() {
+      var _this4 = this;
+
+      this.$http.put('home/pedido/' + this.display + '/status/', {
+        situacao: 'Finalizado'
+      }).then(function (res) {
+        _this4.$http.get('/api/' + _this4.url).then(function (res) {
+          _this4.$store.commit('addRegistroTabela', res.data);
+        });
+      });
+    },
+    inativar: function inativar() {
+      var _this5 = this;
+
+      this.$http.put('home/' + this.url + '/' + this.display, {
+        status: true,
+        ativo: '0'
+      }).then(function (res) {
+        _this5.$http.get('/api/' + _this5.url).then(function (res) {
+          _this5.$store.commit('addRegistroTabela', res.data);
+        });
+      });
+    },
+    ativar: function ativar() {
+      var _this6 = this;
+
+      this.$http.put('home/' + this.url + '/' + this.display, {
+        status: true,
+        ativo: '1'
+      }).then(function (res) {
+        _this6.$http.get('/api/' + _this6.url).then(function (res) {
+          _this6.$store.commit('addRegistroTabela', res.data);
+        });
+      });
+    },
+    gerarpdf: function gerarpdf(id) {
+      window.location.href = this.pdf.replace('_ID_', id);
     }
   },
   computed: {
@@ -6564,10 +6644,10 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   created: function created() {
-    var _this3 = this;
+    var _this7 = this;
 
     this.$http.get('/api/' + this.url).then(function (res) {
-      _this3.$store.commit('addRegistroTabela', res.data);
+      _this7.$store.commit('addRegistroTabela', res.data);
     });
   }
 });
@@ -6719,6 +6799,44 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 vue__WEBPACK_IMPORTED_MODULE_1__["default"].use(vuex__WEBPACK_IMPORTED_MODULE_0__["default"]);
 vue__WEBPACK_IMPORTED_MODULE_1__["default"].filter('colocarvirgula', function (valor) {
   return "".concat(parseFloat(valor).toFixed(2)).replace('.', ',');
+});
+vue__WEBPACK_IMPORTED_MODULE_1__["default"].filter('cpfcnpj', function (valor) {
+  var arr = "".concat(valor).split('');
+
+  if (arr.length === 11) {
+    arr.splice(3, 0, '.');
+    arr.splice(7, 0, '.');
+    arr.splice(11, 0, '-');
+    return arr.join('');
+  } else if (arr.length === 14) {
+    arr.splice(2, 0, '.');
+    arr.splice(6, 0, '.');
+    arr.splice(10, 0, '/');
+    arr.splice(15, 0, '-');
+    return arr.join('');
+  } else {
+    return '';
+  }
+});
+vue__WEBPACK_IMPORTED_MODULE_1__["default"].filter('fone', function (valor) {
+  var arr = "".concat(valor).split('');
+
+  if (arr.length === 11) {
+    arr.splice(0, 0, '(');
+    arr.splice(3, 0, ')');
+    arr.splice(4, 0, ' ');
+    arr.splice(6, 0, '-');
+    arr.splice(11, 0, '-');
+    return arr.join('');
+  } else if (arr.length === 10) {
+    arr.splice(0, 0, '(');
+    arr.splice(3, 0, ')');
+    arr.splice(4, 0, ' ');
+    arr.splice(9, 0, '-');
+    return arr.join('');
+  } else {
+    return '';
+  }
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new vuex__WEBPACK_IMPORTED_MODULE_0__["default"].Store({
   state: {
@@ -12169,7 +12287,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.opcoes[data-v-605ae4b1]{\n    position: relative;\n}\n.opcoes div[data-v-605ae4b1]{\n    position: absolute;\n    background-color: wheat;\n    top: 5px;\n    width: 100px;\n    height: 50px;\n}\n\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.inativo[data-v-605ae4b1]{\n    opacity: 0.5;\n}\n.inativo span svg[data-v-605ae4b1]{\n    cursor:default;\n    fill:rgba(0, 0, 0, 0.534) !important;\n}\n.pedido[data-v-605ae4b1]{\n    height: 50px;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    color: white;\n    text-transform: uppercase;        \n    font-size: 13px;\n}\n.Cancelado[data-v-605ae4b1]{\n    background-color: rgb(228, 77, 77);\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    width: 100px;\n    height: 25px;\n    border-radius: 15px;\n}\n.Finalizado[data-v-605ae4b1]{\n    background-color: rgb(61, 156, 61);\n    display: flex;\n    justify-content: center;\n    align-items: center; \n    width: 100px;\n    height: 25px;\n    border-radius: 15px;\n}\n.Aberto[data-v-605ae4b1]{\n    background-color: rgba(19, 19, 19, 0.85);\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    width: 100px;\n    height: 25px;\n    border-radius: 15px;\n}\n.opcoes[data-v-605ae4b1]{\n    position: relative;\n}\n.opcoes div[data-v-605ae4b1]{\n    position: absolute;\n    display: flex;\n    flex-direction:column;\n    justify-content: center;\n    align-items: center;\n    background-color: rgba(32, 32, 32, 0.8);\n    border-radius: 5px;\n    top: 4px;\n    right: 5px;\n    width: 250px;\n    padding: 15px 0px;\n}\n.opcoes div span[data-v-605ae4b1]{\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    width: 100%;\n    height: 40px;\n    color: white;\n}\n.opcoes div span[data-v-605ae4b1]:hover{\n    background-color:rgb(49, 155, 255);\n}\nq[data-v-605ae4b1]::before {\n    content: \"\";\n    position: absolute;\n    border: 7px solid transparent;\n    border-bottom-color: rgba(3,32,46,.8784313725490196);\n    bottom: 100%;\n    right: 29px;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -33082,10 +33200,13 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "component-ter cl" }, [
+  return _c("div", { staticClass: "component-ter cl cursorpointer" }, [
     _c(
       "fieldset",
-      { staticClass: "cl", class: { fieldsetativo: _vm.displaystatus } },
+      {
+        staticClass: "cl cursorpointer",
+        class: { fieldsetativo: _vm.displaystatus },
+      },
       [
         _c("legend", [_vm._v("Status")]),
         _vm._v(" "),
@@ -33098,6 +33219,7 @@ var render = function () {
               expression: "statusPedido",
             },
           ],
+          staticClass: "cursorpointer",
           attrs: {
             readonly: "readonly",
             type: "text",
@@ -33811,6 +33933,7 @@ var render = function () {
             _c(
               "th",
               {
+                staticClass: "cursorpointer",
                 on: {
                   click: function ($event) {
                     return _vm.ordenar("nome")
@@ -33823,6 +33946,7 @@ var render = function () {
             _c(
               "th",
               {
+                staticClass: "cursorpointer",
                 on: {
                   click: function ($event) {
                     return _vm.ordenar("qtde")
@@ -33835,6 +33959,7 @@ var render = function () {
             _c(
               "th",
               {
+                staticClass: "cursorpointer",
                 on: {
                   click: function ($event) {
                     return _vm.ordenar("valor")
@@ -33847,6 +33972,7 @@ var render = function () {
             _c(
               "th",
               {
+                staticClass: "cursorpointer",
                 on: {
                   click: function ($event) {
                     return _vm.ordenar("desconto")
@@ -33859,6 +33985,7 @@ var render = function () {
             _c(
               "th",
               {
+                staticClass: "cursorpointer",
                 on: {
                   click: function ($event) {
                     return _vm.ordenar("acrescimo")
@@ -35354,6 +35481,7 @@ var render = function () {
             _c(
               "th",
               {
+                staticClass: "cursorpointer",
                 on: {
                   click: function ($event) {
                     return _vm.ordenar("campo1")
@@ -35367,6 +35495,7 @@ var render = function () {
             _c(
               "th",
               {
+                staticClass: "cursorpointer",
                 on: {
                   click: function ($event) {
                     return _vm.ordenar("campo2")
@@ -35380,6 +35509,7 @@ var render = function () {
             _c(
               "th",
               {
+                staticClass: "cursorpointer",
                 on: {
                   click: function ($event) {
                     return _vm.ordenar("campo3")
@@ -35393,6 +35523,7 @@ var render = function () {
             _c(
               "th",
               {
+                staticClass: "cursorpointer",
                 on: {
                   click: function ($event) {
                     return _vm.ordenar("campo4")
@@ -35406,6 +35537,7 @@ var render = function () {
             _c(
               "th",
               {
+                staticClass: "cursorpointer",
                 on: {
                   click: function ($event) {
                     return _vm.ordenar("campo5")
@@ -35419,6 +35551,7 @@ var render = function () {
             _c(
               "th",
               {
+                staticClass: "cursorpointer",
                 on: {
                   click: function ($event) {
                     return _vm.ordenar("campo6")
@@ -35432,6 +35565,7 @@ var render = function () {
             _c(
               "th",
               {
+                staticClass: "cursorpointer",
                 on: {
                   click: function ($event) {
                     return _vm.ordenar("campo7")
@@ -35450,118 +35584,210 @@ var render = function () {
           "tbody",
           _vm._l(_vm.dadosTabelaComput, function (dados, i) {
             return _c("tr", { key: i }, [
-              _c("td", [_vm._v(_vm._s(Number(dados.campo1)))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(dados.campo2))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(dados.campo3))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(dados.campo4))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(dados.campo5))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(dados.campo6))]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(dados.campo7))]),
-              _vm._v(" "),
-              _c("td", { staticClass: "borda-left" }, [
-                _c(
-                  "span",
-                  {
-                    on: {
-                      click: function ($event) {
-                        return _vm.edit(dados.campo1)
-                      },
-                    },
-                  },
-                  [
-                    _c(
-                      "svg",
-                      {
-                        attrs: {
-                          width: "18px",
-                          height: "18px",
-                          viewBox: "0 0 4233 4233",
-                        },
-                      },
-                      [
-                        _c("g", { attrs: { id: "Camada_x0020_1" } }, [
-                          _c("g", { attrs: { id: "_1913567360560" } }, [
-                            _c("path", {
-                              staticClass: "fill-blue",
-                              attrs: {
-                                d: "M454 4233l2721 0c251,0 454,-203 454,-453l0 -1512c0,-84 -68,-151 -152,-151 -83,0 -151,67 -151,151l0 1512c0,83 -67,151 -151,151l-2721 0c-84,0 -152,-68 -152,-151l0 -3024c0,-84 68,-151 152,-151l1814 0c83,0 151,-68 151,-151 0,-84 -68,-152 -151,-152l-1814 0c-251,0 -454,203 -454,454l0 3024c0,250 203,453 454,453z",
-                              },
-                            }),
-                            _c("path", {
-                              staticClass: "fill-blue",
-                              attrs: {
-                                d: "M3850 774l-1965 1966 -588 196 196 -586 1966 -1966c108,-108 283,-108 391,0 52,52 81,122 81,195 0,73 -29,144 -81,195zm383 -193l0 -5c0,-147 -57,-294 -169,-406 -109,-109 -256,-170 -409,-170 -154,0 -301,61 -410,170l-1991 1991c-17,17 -29,37 -37,59l-302 907c-26,79 16,165 96,191 15,6 31,8 47,8 17,0 33,-2 48,-8l907 -302c23,-7 43,-20 59,-36l1992 -1992c112,-112 169,-259 169,-407z",
-                              },
-                            }),
-                          ]),
-                        ]),
-                      ]
-                    ),
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "span",
-                  {
-                    staticClass: "status",
-                    on: {
-                      click: function ($event) {
-                        return _vm.status(dados.campo1)
-                      },
-                    },
-                  },
-                  [
-                    _c(
-                      "svg",
-                      {
-                        attrs: {
-                          width: "18px",
-                          height: "18px",
-                          viewBox: "0 0 443 357",
-                        },
-                      },
-                      [
-                        _c("rect", {
-                          staticClass: "fill-blue",
-                          attrs: { width: "443", height: "32.86" },
-                        }),
-                        _vm._v(" "),
-                        _c("rect", {
-                          staticClass: "fill-blue",
-                          attrs: { y: "324", width: "443", height: "32.86" },
-                        }),
-                        _vm._v(" "),
-                        _c("rect", {
-                          staticClass: "fill-blue",
-                          attrs: { y: "162", width: "443", height: "32.86" },
-                        }),
-                      ]
-                    ),
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    directives: [
-                      {
-                        name: "show",
-                        rawName: "v-show",
-                        value: _vm.display == dados.campo1,
-                        expression: "display == dados.campo1",
-                      },
-                    ],
-                    staticClass: "opcoes",
-                  },
-                  [_c("div")]
-                ),
+              _c("td", { class: { inativo: dados.campo7 == 0 } }, [
+                _vm._v(_vm._s(Number(dados.campo1))),
               ]),
+              _vm._v(" "),
+              _vm.url == "pedido"
+                ? _c("td", { class: { inativo: dados.campo7 == 0 } }, [
+                    _vm._v(" " + _vm._s(dados.campo2.nome)),
+                  ])
+                : _c("td", { class: { inativo: dados.campo7 == 0 } }, [
+                    _vm._v(" " + _vm._s(dados.campo2)),
+                  ]),
+              _vm._v(" "),
+              _vm.url == "clientes"
+                ? _c("td", { class: { inativo: dados.campo7 == 0 } }, [
+                    _vm._v(_vm._s(_vm._f("cpfcnpj")(dados.campo3))),
+                  ])
+                : _vm.url == "Pedido"
+                ? _c("td", [_vm._v(_vm._s(_vm.strdados.campo3))])
+                : _c("td", { class: { inativo: dados.campo7 == 0 } }, [
+                    _vm._v(_vm._s(dados.campo3)),
+                  ]),
+              _vm._v(" "),
+              _vm.url == "pedido"
+                ? _c("td", { staticClass: "pedido" }, [
+                    _c("p", { class: dados.campo4 }, [
+                      _vm._v(_vm._s(dados.campo4)),
+                    ]),
+                  ])
+                : _vm.url == "clientes"
+                ? _c("td", { class: { inativo: dados.campo7 == 0 } }, [
+                    _vm._v(_vm._s(_vm._f("fone")(dados.campo4))),
+                  ])
+                : _c("td", { class: { inativo: dados.campo7 == 0 } }, [
+                    _vm._v(_vm._s(dados.campo4)),
+                  ]),
+              _vm._v(" "),
+              _vm.url == "produtos"
+                ? _c("td", { class: { inativo: dados.campo7 == 0 } }, [
+                    _vm._v(_vm._s(_vm._f("colocarvirgula")(dados.campo5))),
+                  ])
+                : _c("td", { class: { inativo: dados.campo7 == 0 } }, [
+                    _vm._v(_vm._s(dados.campo5)),
+                  ]),
+              _vm._v(" "),
+              _vm.url == "produtos"
+                ? _c("td", { class: { inativo: dados.campo7 == 0 } }, [
+                    _vm._v(_vm._s(_vm._f("colocarvirgula")(dados.campo6))),
+                  ])
+                : _c("td", { class: { inativo: dados.campo7 == 0 } }, [
+                    _vm._v(_vm._s(dados.campo6)),
+                  ]),
+              _vm._v(" "),
+              _c("td"),
+              _vm._v(" "),
+              _c(
+                "td",
+                {
+                  staticClass: "borda-left",
+                  class: { inativo: dados.campo4 == "Cancelado" },
+                },
+                [
+                  _c(
+                    "span",
+                    {
+                      on: {
+                        click: function ($event) {
+                          return _vm.edit(dados)
+                        },
+                      },
+                    },
+                    [
+                      _c(
+                        "svg",
+                        {
+                          attrs: {
+                            width: "18px",
+                            height: "18px",
+                            viewBox: "0 0 4233 4233",
+                          },
+                        },
+                        [
+                          _c("g", { attrs: { id: "Camada_x0020_1" } }, [
+                            _c("g", { attrs: { id: "_1913567360560" } }, [
+                              _c("path", {
+                                staticClass: "fill-blue",
+                                attrs: {
+                                  d: "M454 4233l2721 0c251,0 454,-203 454,-453l0 -1512c0,-84 -68,-151 -152,-151 -83,0 -151,67 -151,151l0 1512c0,83 -67,151 -151,151l-2721 0c-84,0 -152,-68 -152,-151l0 -3024c0,-84 68,-151 152,-151l1814 0c83,0 151,-68 151,-151 0,-84 -68,-152 -151,-152l-1814 0c-251,0 -454,203 -454,454l0 3024c0,250 203,453 454,453z",
+                                },
+                              }),
+                              _c("path", {
+                                staticClass: "fill-blue",
+                                attrs: {
+                                  d: "M3850 774l-1965 1966 -588 196 196 -586 1966 -1966c108,-108 283,-108 391,0 52,52 81,122 81,195 0,73 -29,144 -81,195zm383 -193l0 -5c0,-147 -57,-294 -169,-406 -109,-109 -256,-170 -409,-170 -154,0 -301,61 -410,170l-1991 1991c-17,17 -29,37 -37,59l-302 907c-26,79 16,165 96,191 15,6 31,8 47,8 17,0 33,-2 48,-8l907 -302c23,-7 43,-20 59,-36l1992 -1992c112,-112 169,-259 169,-407z",
+                                },
+                              }),
+                            ]),
+                          ]),
+                        ]
+                      ),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "span",
+                    {
+                      staticClass: "status",
+                      on: {
+                        click: function ($event) {
+                          return _vm.status(dados.campo1)
+                        },
+                      },
+                    },
+                    [
+                      _c(
+                        "svg",
+                        {
+                          attrs: {
+                            width: "18px",
+                            height: "18px",
+                            viewBox: "0 0 443 357",
+                          },
+                        },
+                        [
+                          _c("rect", {
+                            staticClass: "fill-blue",
+                            attrs: { width: "443", height: "32.86" },
+                          }),
+                          _vm._v(" "),
+                          _c("rect", {
+                            staticClass: "fill-blue",
+                            attrs: { y: "324", width: "443", height: "32.86" },
+                          }),
+                          _vm._v(" "),
+                          _c("rect", {
+                            staticClass: "fill-blue",
+                            attrs: { y: "162", width: "443", height: "32.86" },
+                          }),
+                        ]
+                      ),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  dados.campo4 != "Cancelado"
+                    ? _c(
+                        "div",
+                        {
+                          directives: [
+                            {
+                              name: "show",
+                              rawName: "v-show",
+                              value: _vm.display == dados.campo1,
+                              expression: "display == dados.campo1",
+                            },
+                          ],
+                          staticClass: "opcoes",
+                          on: { click: _vm.status },
+                        },
+                        [
+                          _vm.url == "pedido"
+                            ? _c("div", [
+                                _c("q"),
+                                _vm._v(" "),
+                                _c("span", { on: { click: _vm.cancelar } }, [
+                                  _vm._v("Cancelar"),
+                                ]),
+                                _vm._v(" "),
+                                _c("span", { on: { click: _vm.finalizar } }, [
+                                  _vm._v("Finalizar"),
+                                ]),
+                                _vm._v(" "),
+                                _c("span", [
+                                  _c(
+                                    "a",
+                                    {
+                                      attrs: {
+                                        href: _vm.pdf.replace(
+                                          "_ID_",
+                                          dados.campo1
+                                        ),
+                                        target: "_blank",
+                                      },
+                                    },
+                                    [_vm._v("Imprimir-A4")]
+                                  ),
+                                ]),
+                              ])
+                            : _c("div", [
+                                _c("q"),
+                                _vm._v(" "),
+                                dados.campo7 == 1
+                                  ? _c(
+                                      "span",
+                                      { on: { click: _vm.inativar } },
+                                      [_vm._v("Inativar")]
+                                    )
+                                  : _c("span", { on: { click: _vm.ativar } }, [
+                                      _vm._v("Ativar"),
+                                    ]),
+                              ]),
+                        ]
+                      )
+                    : _vm._e(),
+                ]
+              ),
             ])
           }),
           0

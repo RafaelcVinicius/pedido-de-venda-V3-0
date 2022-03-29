@@ -11,7 +11,8 @@
 export default {
     props:{
         vendedor:String,
-        idvendedor:Number
+        idvendedor:Number,
+        dadospedido:Object,
     },
     data(){
         return{
@@ -27,7 +28,7 @@ export default {
         },
         viewDetalhesPedido(){
             return this.$store.state.displayDetalhesPedido
-        }
+        },
     },
     watch:{
         viewEditProduto(){
@@ -43,6 +44,15 @@ export default {
     },
     created(){
         this.$store.commit('commitVendedor', {nome:this.vendedor, id:this.idvendedor})
+        if(this.dadospedido != null){
+             this.$store.state.dadosPedido = this.dadospedido
+            if(this.dadospedido.itens == null){
+
+            }else{
+                this.$store.state.displayProduto        = true
+                this.$store.state.displayDetalhesPedido = true
+            }
+        }
     }
 }
 </script>

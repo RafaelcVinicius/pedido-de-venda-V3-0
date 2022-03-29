@@ -4,11 +4,11 @@
             <table>
                 <thead>
                     <tr class="thead-tr">
-                        <th @click="ordenar('nome')" >Produto</th>
-                        <th @click="ordenar('qtde')" >Qtde</th>
-                        <th @click="ordenar('valor')" >Valor un. (R$)</th>
-                        <th @click="ordenar('desconto')" >Desc. (%)</th>
-                        <th @click="ordenar('acrescimo')" >Acrés. (%)</th>
+                        <th class="cursorpointer" @click="ordenar('nome')" >Produto</th>
+                        <th class="cursorpointer" @click="ordenar('qtde')" >Qtde</th>
+                        <th class="cursorpointer" @click="ordenar('valor')" >Valor un. (R$)</th>
+                        <th class="cursorpointer" @click="ordenar('desconto')" >Desc. (%)</th>
+                        <th class="cursorpointer" @click="ordenar('acrescimo')" >Acrés. (%)</th>
                         <th >Total (R$)</th>
                         <th>Ação</th>
                     </tr>
@@ -64,9 +64,11 @@ export default {
             this.$http.post('/api/'+this.url+'where', {pesquisa: this.pesquisa }).then(res => {this.$store.commit('addRegistroTabela', res.data)})   
         },
         delProduto(i){
+            
             this.$store.commit('delProduto', i)
         },
         editProduto(i){
+                         console.log(this.$store.state.dadosPedido)
             this.$store.dispatch('alterarProduto', i)
         }
     },

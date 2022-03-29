@@ -7,6 +7,7 @@ use App\Http\Controllers\PedidoController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -28,7 +29,7 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 Route::prefix('home')->group(function () {
 
-    Route::resource('/produtos', ProdutoController::class);    
+    Route::resource('/produtos', ProdutoController::class);
     Route::resource('/clientes', ClienteController::class);
 
     route::prefix('pedido')->group(function (){
@@ -39,6 +40,11 @@ Route::prefix('home')->group(function () {
 
         route::post('/gravar', [PedidoController::class, 'store'])->name('pedido.store');
 
-        route::get('{id?}/edit/', [PedidoController::class, 'edit'])->name('pedido.edit');
+        route::get('{id}/edit/', [PedidoController::class, 'edit'])->name('pedido.edit');
+        
+        route::put('{id}/status/', [PedidoController::class, 'status'])->name('pedido.status');
+
+        route::get('pdf/{id}', [PedidoController::class, 'pdf'])->name('pedido.pdf');
+
     });
 });

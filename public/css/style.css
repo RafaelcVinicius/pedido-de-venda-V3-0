@@ -323,10 +323,10 @@ legend{
     border-bottom: 1px solid #00ccff94;
 } 
 .thead-tr{
-background-color: #03202e;
+    background-color: #03202e;
 }
 th {
-font-weight: 500;
+    font-weight: 500;
 }
 table{ 
     border-collapse:collapse;
@@ -337,10 +337,12 @@ table{
 }
 .borda-left span{
     cursor: pointer;
+    opacity: 1 !important;
 }
 .borda-left span svg{
     width: 35px;
-    fill: #00a2ff;
+    opacity: 1 !important;
+    fill: #00a2ff ;
 }
 .lista{
     position: absolute;
@@ -401,8 +403,17 @@ table{
     width: calc(100% - 2rem);
     outline: 0;
     font-size: 14px;
-
 }
 .status svg{
     width:18px !important
+}
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-transition: "color 9999s ease-out, background-color 9999s ease-out";
+    -webkit-transition-delay: 9999s;
+}
+.cursorpointer{
+    cursor: pointer;
 }

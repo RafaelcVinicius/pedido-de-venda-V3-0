@@ -22,7 +22,8 @@ class Produtos extends Model
            'codbarras as campo3',
            'referencia as campo4' ,           
            'precovenda as campo5',           
-           'qtde as campo6'           
+           'qtde as campo6',           
+           'ativo as campo7'           
        )->get();
        return $produtos;
    }

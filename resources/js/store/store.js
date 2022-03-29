@@ -8,6 +8,48 @@ Vue.filter('colocarvirgula', valor => {
 	return `${parseFloat(valor).toFixed(2)}`.replace('.', ',')
 })
 
+Vue.filter('cpfcnpj', function(valor) {
+    const arr = `${valor}`.split('')
+
+    if(arr.length === 11){
+        arr.splice(3, 0, '.')
+        arr.splice(7, 0, '.')
+        arr.splice(11, 0, '-')
+        return arr.join('')
+    }
+    else if(arr.length === 14){
+        arr.splice(2, 0, '.')
+        arr.splice(6, 0, '.')
+        arr.splice(10, 0, '/')
+        arr.splice(15, 0, '-')
+        return arr.join('')
+    }else{
+        return ''
+    }
+})
+
+Vue.filter('fone', function(valor) {
+    const arr = `${valor}`.split('')
+
+    if(arr.length === 11){
+        arr.splice(0, 0, '(')
+        arr.splice(3, 0, ')')
+        arr.splice(4, 0, ' ')
+        arr.splice(6, 0, '-')
+        arr.splice(11, 0, '-')
+        return arr.join('')
+    }
+    else if(arr.length === 10){
+        arr.splice(0, 0, '(')
+        arr.splice(3, 0, ')')
+        arr.splice(4, 0, ' ')
+        arr.splice(9, 0, '-')
+        return arr.join('')
+    }else{
+        return ''
+    }
+})
+
 
 export default new Vuex.Store({
 

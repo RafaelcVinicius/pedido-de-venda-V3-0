@@ -15,6 +15,7 @@
                 <dados-tabela
                 :url="'clientes'" 
                 :vshow="true"
+                :editurl="{{json_encode(route('clientes.edit', '_ID_'))}}"
                 >
                     <th><p slot="thead-1">ID</p></th>
                     <th><p slot="thead-2">Nome</p></th>

@@ -12,4 +12,9 @@ class Formadepagamento extends Model
     protected $table = 'formadepagamento';
     protected $primarykey = 'id';
     public $timestamps = true;
+
+
+    public function especie(){
+        return $this->hasOne(Especies::class, 'id', 'id_especie');
+    }
 }

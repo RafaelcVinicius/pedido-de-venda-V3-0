@@ -15,10 +15,10 @@ class PedidoResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => intval($this->id),
+            'idPedido' => intval($this->id),
             'email'=> $this->email,
-            'situacao'=> $this->situacao, 
-            'data'=>$this->previsaoentrega,           
+            'status'=> $this->situacao, 
+            'previsaoEntrega'=>$this->previsaoentrega,           
             'cliente' => [
                 'id' => $this->cliente->id,
                 'nome' => $this->cliente->nome,
@@ -27,8 +27,14 @@ class PedidoResource extends JsonResource
             'vendedor' => [
                 'id' => $this->user->id,
                 'nome' => $this->user->name
-            ],            
-            'produtos' => PedidoItemResource::collection($this->itens)
+            ],
+            'detalhamentoDeValores' => [
+                'acrescimo' => $this->acrescimo,
+                'desconto' => $this->desconto,
+            ],
+            'obsPedido' => $this->obspedido,
+            'formasDePagamento' => Formadepagamento::collection($this->formadepagamento),
+            'itens' => PedidoItemResource::collection($this->itens),
         ];
     }
 }

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\ClienteResource;
+use App\Http\Resources\PedidoTabela;
+use App\Http\Resources\PedidoTabelaResource;
 use App\Models\Aplicacaoproduto;
 use App\Models\Cidade;
 use App\Models\Clientes;
@@ -12,6 +14,7 @@ use App\Models\Pedido;
 use App\Models\Produtos;
 use App\Models\Uf;
 use App\Models\Uncomercial;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 
 class ApiController extends Controller
@@ -89,7 +92,8 @@ class ApiController extends Controller
     //consolta todos os pedidos
 
     public function pedido(){
-        return json_encode(Pedido::selectdados());
-    
+       $resource  =  PedidoTabelaResource::Collection(Pedido::all());
+
+        return json_encode($resource);    
     }
 }

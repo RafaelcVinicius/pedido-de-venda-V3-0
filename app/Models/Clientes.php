@@ -24,7 +24,8 @@ class Clientes extends Model
             'id as campo1',
             'nome as campo2',
             'cnpjcpf as campo3',
-            'telefone as campo4'            
+            'telefone as campo4',
+            'ativo as campo7'             
         )->get();
         return $clientes;
     }

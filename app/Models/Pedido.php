@@ -28,28 +28,32 @@ class Pedido extends Model
     }
 
     public function itens(){
-        return $this->hasMany(Itempedido::class, 'id_venda', 'id');
+        return $this->hasMany(Itempedido::class, 'id_pedido', 'id');
+    }
+
+    public function formadepagamento(){
+        return $this->hasMany(Formadepagamento::class, 'id_pedido', 'id');
     }
 
     public function getTotalProdutosAttribute() {    
 
-        $produto = DB::table('itempedido')->select(DB::raw(' cast(SUM(valor * qtde)as decimal(15,2) ) as valorTotal'))->where('id_venda', $this->id)->first();
+        $produto = DB::table('itempedido')->select(DB::raw(' cast(SUM(valor * qtde)as decimal(15,2) ) as valorTotal'))->where('id_pedido', $this->id)->first();
         return $produto;
     }
     public function getTotalPedidoAttribute() {    
-        $produto = DB::table('itempedido')->select(DB::raw(' cast(SUM(((percacrescimo / 100) * (valor * qtde) - (percdesconto / 100) * (valor * qtde)) + valor * qtde)as decimal(15,2)) as valorTotal'))->where('id_venda', $this->id)->first();
+        $produto = DB::table('itempedido')->select(DB::raw(' cast(SUM(((percacrescimo / 100) * (valor * qtde) - (percdesconto / 100) * (valor * qtde)) + valor * qtde)as decimal(15,2)) as valorTotal'))->where('id_pedido', $this->id)->first();
         return $produto;
     }
 
     public function getTotalAcrescimoAttribute() {    
 
-        $produto = DB::table('itempedido')->select(DB::raw('cast(SUM((percacrescimo / 100) * (valor * qtde))as decimal(15,2)) as valorTotal'))->where('id_venda', $this->id)->first();
+        $produto = DB::table('itempedido')->select(DB::raw('cast(SUM((percacrescimo / 100) * (valor * qtde))as decimal(15,2)) as valorTotal'))->where('id_pedido', $this->id)->first();
         return $produto;
     }
 
     public function getTotalDescontoAttribute() {    
 
-        $produto = DB::table('itempedido')->select(DB::raw('cast(SUM((percdesconto / 100) * (valor * qtde))as decimal(15,2)) as valorTotal'))->where('id_venda', $this->id)->first();
+        $produto = DB::table('itempedido')->select(DB::raw('cast(SUM((percdesconto / 100) * (valor * qtde))as decimal(15,2)) as valorTotal'))->where('id_pedido', $this->id)->first();
         return $produto;
     }
 
@@ -59,7 +63,11 @@ class Pedido extends Model
            'id_cliente as campo2',
            'previsaoentrega as campo3',
            'situacao as campo4',                
-       )->get();
+        )->get();
+       return $produtos;
+   }
+    public static function select(){
+        $produtos = Self::get();
        return $produtos;
    }
 }
