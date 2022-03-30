@@ -1,3 +1,4 @@
+import { find, findIndex, forEach, map } from 'lodash'
 import Vue from 'vue'
 import Vuex from 'vuex'
 
@@ -92,6 +93,7 @@ export default new Vuex.Store({
             tipoFrete:{
                 tipo:'Nenhum',
                 valor:0,
+                id:1,
                 cobranca: '0',
             },
             formasDePagamento:{},
@@ -103,12 +105,13 @@ export default new Vuex.Store({
         cnpjcpfCliente(state){  
             var obj = {}; 
 
-            obj.cnpjcpf = state.dadosPedido.cliente.cnpjcpf       
-            if( state.dadosPedido.cliente.cnpjcpf.length > 11){    
-                obj.mask = '##.###.###/####-##'
-            }else{
-                obj.mask = '###.###.###-##'
-            }
+            obj.cnpjcpf = state.dadosPedido.cliente.cnpjcpf
+          
+                if( state.dadosPedido.cliente.cnpjcpf.length > 11){    
+                    obj.mask = '##.###.###/####-##'
+                }else{
+                    obj.mask = '###.###.###-##'
+                }          
             return obj
         },
         listaDeProdutos(state){
@@ -210,12 +213,33 @@ export default new Vuex.Store({
         commitFormaDePagamento(state,payload){
             state.dadosPedido.formasDePagamento = payload
         },
+        commitDadosPedido(state, payload){          
+            console.log(state.dadosPedido)
+            console.log(payload)
+
+            state.dadosPedido = payload;
+
+            setTimeout(()=>{
+                state.dadosPedido = payload;
+            },1)           
+
+            setTimeout(()=> {  
+                var especies = payload.formasDePagamento
+                // :value="especies.findIndex((i) => i.id == especie.id) >= 0 ? especies[especies.findIndex((i) => i.id == especie.id)].valor : null" 
+              
+              var g =  state.dadosPedido.formasDePagamento.map((u, i, a) => u.id ==  especies.map(e, s, l)   )
+
+                console.log(g)
+            }, 100)
+
+        },
         gravarPedido(state, payload){
-            console.log('ff')
             var obj = {}
-            obj = state.dadosPedido            
+            console.log(state.dadosPedido)
+            obj = state.dadosPedido 
+
             axios.post(window.location.href.split('/')[0] + '//' + window.location.hostname+':8000' + '/home/pedido/gravar', {data:obj}).then(response => {response})
-            window.location.href = 'http://localhost:8000/home/pedido'
+            // window.location.href = 'http://localhost:8000/home/pedido'
         }
     },
     actions:{
@@ -260,8 +284,13 @@ export default new Vuex.Store({
         setformasDePagamento({commit}, payload){
             // var especie = {}
             // this.$http.get('/api/especies').then(res => {especie = res.data})
-            // console.log(especie)
             // commit('commitFormaDePagamento', especie)
-        }        
+        },
+        setDadosPedido({commit}, payload){
+            // console.log(payload)
+
+            commit('commitDadosPedido', payload)
+        },     
+
     }
 })

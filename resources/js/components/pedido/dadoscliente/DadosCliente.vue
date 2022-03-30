@@ -40,7 +40,6 @@ export default {
     },
     methods:{
         setEmail(){
-            console.log(this.email)
             this.$store.state.dadosPedido.email = this.email
         },
         setData(){
@@ -48,30 +47,28 @@ export default {
         }
     },
      created(){
-        if(this.$store.state.dadosPedido.idPedido === 0){
+        
+            this.email =  this.$store.state.dadosPedido.email
+            this.data =  this.$store.state.dadosPedido.previsaoEntrega
+
+
+        if(this.$store.state.dadosPedido.idPedido <= 0){
             var data = new Date();
             var dia = String(data.getDate()).padStart(2, '0');
             var mes = String(data.getMonth() + 1).padStart(2, '0');
             var ano = data.getFullYear();
             var dataAtual = ano + '-' + mes + '-' + dia;
-            console.log(dataAtual);
             this.data =  dataAtual
             this.$store.state.dadosPedido.previsaoEntrega = dataAtual
         }
      },
     computed:{
-        dadosCliente(){               
+        dadosCliente(){        
             return this.$store.getters.cnpjcpfCliente
         },
         vendedor(){
           return  this.$store.state.dadosPedido.vendedor
-        },
-        getemail(){
-          this.email =  this.$store.state.dadosPedido.email
-        },
-        getdata(){
-          this.data =  this.$store.state.dadosPedido.previsaoEntrega
-        }
+        },       
     },
 }
 </script>

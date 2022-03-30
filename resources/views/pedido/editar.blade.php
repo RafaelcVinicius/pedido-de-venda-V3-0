@@ -13,7 +13,7 @@
             </div>   
             <div class="corpo-box-fundo-off">
                 <pedido-de-venda 
-                :vendedor="{{json_encode($vendedor->user->name)}}" :idvendedor="{{json_encode($vendedor->user->id)}}" :dadospedido="{{json_encode($resource)}}"
+                :vendedor="{{json_encode($vendedor->user->name)}}" :idvendedor="{{json_encode($vendedor->user->id)}}" :dados="{{json_encode($resource)}}"
                 > 
                 </pedido-de-venda>
             </div>        

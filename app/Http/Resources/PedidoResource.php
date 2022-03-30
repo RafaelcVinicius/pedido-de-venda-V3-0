@@ -33,6 +33,12 @@ class PedidoResource extends JsonResource
                 'desconto' => $this->desconto,
             ],
             'obsPedido' => $this->obspedido,
+            'tipoFrete' => [
+                'tipo' => $this->tipofrete->tipo,
+                'id' => $this->tipofrete->id,
+                'valor' => $this->valorfrete,
+                'cobranca' => $this->tipofrete->cobranca
+            ],
             'formasDePagamento' => Formadepagamento::collection($this->formadepagamento),
             'itens' => PedidoItemResource::collection($this->itens),
         ];

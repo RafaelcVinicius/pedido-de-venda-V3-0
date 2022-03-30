@@ -16,11 +16,11 @@ class PedidoItemResource extends JsonResource
     {
         return [
             'id' => intval($this->produto->id),
-            'valor'=> (float)$this->produto->valor,
+            'valor'=> sprintf('%.2f', $this->valor),
             'nome'=> $this->produto->nome,
-            'qtde'=> (float)$this->qtde,
-            'percacrescimo'=> (float)$this->percacrescimo,
-            'percdesconto'=>(float)$this->percdesconto,
+            'qtde'=> sprintf('%.2f', $this->qtde),
+            'acrescimo'=> sprintf('%.2f', $this->percacrescimo),
+            'desconto'=> sprintf('%.2f', $this->percdesconto),
         ];
     }
 }

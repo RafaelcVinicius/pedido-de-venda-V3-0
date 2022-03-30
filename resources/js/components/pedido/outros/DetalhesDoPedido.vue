@@ -5,7 +5,7 @@
                 <h5 class="titulo-grupo">Observações do pedido</h5>
                 <div class="div-flex">  
                     <fieldset class="cl textarea">
-                        <textarea v-model="obsPedido" name="observacao" id="observacao"></textarea>
+                        <textarea v-model="obsPedido" @blur="setObsPedido" name="observacao" id="observacao"></textarea>
                     </fieldset>
                 </div> 
             </div>                  
@@ -22,7 +22,7 @@
                         </fieldset>
                         <ul class="lista" v-show="displaydados">
                             <li @click="definirTipoFrete(dados)" v-for="(dados, i) in pesquisa" :key="i">{{dados.tipo}}</li>
-                        </ul>   
+                        </ul>
                     </div>
                     <div class="valorfrete cl-2">                        
                         <fieldset v-if="getFrete.cobranca == '0' " class=" none cl">
@@ -99,7 +99,10 @@ export default {
         setvalorFrete(){
             this.$store.commit('commitValorFrete', this.valorFrete)
             this.alterarValores()
-        }
+        },
+        setObsPedido(){
+            this.$store.state.dadosPedido.obsPedido = this.obsPedido
+        },
     },
     computed:{
         totalizadoresPedido(){
@@ -107,10 +110,7 @@ export default {
         },
         detalhamentoDeValores(){
             return this.$store.getters.detalhamentoValores
-        },
-        getObsPedido(){
-            this.obsPedido = this.$store.state.obsPedido
-        },
+        },       
         getFrete(){
             this.tipoFrete = this.$store.getters.getFrete
             this.valorFrete = this.$store.getters.getFrete.valor
@@ -119,6 +119,13 @@ export default {
     },
     created(){
         this.$http.get('/api/formasentrega').then(res => {this.pesquisa = res.data})   
+        this.obsPedido = this.$store.state.dadosPedido.obsPedido
+
+        this.tipoFrete = this.$store.getters.getFrete
+        this.valorFrete = this.$store.getters.getFrete.valor
+
+        this.acrescimo = this.$store.state.dadosPedido.detalhamentoDeValores.acrescimo
+        this.desconto  = this.$store.state.dadosPedido.detalhamentoDeValores.desconto   
     }
 }
 </script>

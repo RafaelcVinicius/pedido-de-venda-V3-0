@@ -52,6 +52,9 @@ export default {
             this.$store.dispatch('alterarCliente', dado)
         }
     },
+    created(){
+        this.dados = this.$store.state.dadosPedido.cliente.nome
+    }
 }
 </script>
 <style scoped>

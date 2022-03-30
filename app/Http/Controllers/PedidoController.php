@@ -25,7 +25,7 @@ class PedidoController extends Controller
     public function store(Request $request){
 
         $data = $request->get('data');
-
+// dd($data['obsPedido']);
         // dd($data['formasDePagamento'][0]);
 
         if($data['status'] == "Aberto" ){            
@@ -34,7 +34,12 @@ class PedidoController extends Controller
             $pedido->id_vendedor     = $data['vendedor']['id'];
             $pedido->email           = $data['email'];
             $pedido->situacao        = "Aberto";
+            $pedido->id_frete        = $data['tipoFrete']['id'];
+            $pedido->valorfrete      = $data['tipoFrete']['valor'];
             $pedido->previsaoentrega = $data['previsaoEntrega'];
+            $pedido->obspedido       = $data['obsPedido'] === null ? "" :  $data['obsPedido'];
+            $pedido->acrescimo       = $data['detalhamentoDeValores']['acrescimo'];
+            $pedido->desconto        = $data['detalhamentoDeValores']['desconto'];
             $pedido->save();
 
             foreach($data['itens'] as $item){
@@ -64,7 +69,12 @@ class PedidoController extends Controller
             $pedido->id_vendedor     = $data['vendedor']['id'];
             $pedido->email           = $data['email'];
             $pedido->situacao        = "Finalizado";
+            $pedido->id_frete        = $data['tipoFrete']['id'];
+            $pedido->valorfrete      = $data['tipoFrete']['valor'];
             $pedido->previsaoentrega = $data['previsaoEntrega'];
+            $pedido->obspedido       = $data['obsPedido'] === null ? "" :  $data['obsPedido'];
+            $pedido->acrescimo       = $data['detalhamentoDeValores']['acrescimo'];
+            $pedido->desconto        = $data['detalhamentoDeValores']['desconto'];
             $pedido->save();
 
             foreach($data['itens'] as $item){
@@ -94,7 +104,12 @@ class PedidoController extends Controller
             $pedido->id_vendedor     = $data['vendedor']['id'];
             $pedido->email           = $data['email'];
             $pedido->situacao        = "Cancelado";
+            $pedido->id_frete        = $data['tipoFrete']['id'];
+            $pedido->valorfrete      = $data['tipoFrete']['valor'];
             $pedido->previsaoentrega = $data['previsaoEntrega'];
+            $pedido->obspedido       = $data['obsPedido'] === null ? "" :  $data['obsPedido'];
+            $pedido->acrescimo       = $data['detalhamentoDeValores']['acrescimo'];
+            $pedido->desconto        = $data['detalhamentoDeValores']['desconto'];
             $pedido->save();
 
             foreach($data['itens'] as $item){
@@ -127,7 +142,7 @@ class PedidoController extends Controller
         $resource = Pedido::findOrFail($id);
         $resource = new PedidoResource($resource);
         $dados = Pedido::find($id);
-        // dd(json_encode($resource));
+        //  dd($resource->tipofrete);
         return view('pedido.editar')->with('vendedor', $dados)->with('resource', $resource );
 
     }
@@ -141,8 +156,6 @@ class PedidoController extends Controller
     public function pdf($id){
         $dados = new stdClass();
         $dados = Pedido::find($id);
-
-        // dd($dados->TotalPedido);
         return PDF::loadView('pdf.pedido', compact('dados'))->setPaper('a4', 'portrait')->stream('Pedido'.$id.'.pdf');
     }
 }

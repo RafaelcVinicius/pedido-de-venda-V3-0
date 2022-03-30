@@ -63,12 +63,10 @@ export default {
         consultaAxiox(){
             this.$http.post('/api/'+this.url+'where', {pesquisa: this.pesquisa }).then(res => {this.$store.commit('addRegistroTabela', res.data)})   
         },
-        delProduto(i){
-            
+        delProduto(i){            
             this.$store.commit('delProduto', i)
         },
         editProduto(i){
-                         console.log(this.$store.state.dadosPedido)
             this.$store.dispatch('alterarProduto', i)
         }
     },

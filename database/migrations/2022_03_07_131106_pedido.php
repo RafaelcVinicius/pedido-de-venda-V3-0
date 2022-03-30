@@ -17,12 +17,14 @@ class Pedido extends Migration
             $table->id();
             $table->integer('id_cliente');
             $table->integer('id_vendedor');
+            $table->integer('id_frete');
             $table->string('email', 50)->nullable();
             $table->string('situacao', 20);
             $table->date('previsaoentrega')->nullable();
             $table->decimal('acrescimo', 16,2);
             $table->decimal('desconto', 16,2);
-            $table->string('obsPedido',150);
+            $table->string('obspedido',150);
+            $table->decimal('valorfrete',16,2);
             $table->timestamps();
         });
     }

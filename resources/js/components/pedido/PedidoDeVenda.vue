@@ -3,7 +3,7 @@
         <DadosCliente  />
         <DadosProdutos v-show="viewProduto"/>
         <DetalhesDoPedido v-show="viewDetalhesPedido"/>
-        <FormaDePagamento v-show="viewDetalhesPedido"/>
+        <FormaDePagamento v-show="viewDetalhesPedido" />
     </div>
 </template>
 
@@ -12,11 +12,11 @@ export default {
     props:{
         vendedor:String,
         idvendedor:Number,
-        dadospedido:Object,
+        dados:Object,
     },
     data(){
         return{
-
+            // especiesdefault: []
         }
     },
     computed:{
@@ -43,15 +43,21 @@ export default {
         }
     },
     created(){
+        this.$http.get('/api/especies').then(res => { this.especiesdefault = this.$store.commit('commitFormaDePagamento', res.data)})
+                // this.$http.get('/api/especies').then(res => { this.especiesdefault = res.data})       
         this.$store.commit('commitVendedor', {nome:this.vendedor, id:this.idvendedor})
-        if(this.dadospedido != null){
-             this.$store.state.dadosPedido = this.dadospedido
-            if(this.dadospedido.itens == null){
 
-            }else{
+        if(this.dados.idPedido > 0){
+        //    this.dados.idPedido
+            this.$store.dispatch('setDadosPedido', this.dados)
+
+            if(this.dados.itens.length > 0){
                 this.$store.state.displayProduto        = true
                 this.$store.state.displayDetalhesPedido = true
+            }else{
+               
             }
+          
         }
     }
 }

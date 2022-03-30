@@ -15,9 +15,9 @@ class Formadepagamento extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => intval($this->id),
-            'nome'=> $this->nome,
-            'valor'=> (float)$this->valorpago,
+            'id' => intval($this->especie->id),
+            'nome'=> $this->especie->nome,
+            'valor'=> $this->valorpago,
         ];
 
     }

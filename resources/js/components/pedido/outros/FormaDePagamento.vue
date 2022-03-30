@@ -15,7 +15,7 @@
                             <td class="td-left"> {{especie.nome}}</td>
                             <td >
                                 <fieldset class="cl">
-                                    <input type="text" v-model="especies[i].valor" @blur="setFormaDePagamento"  v-money="money" >
+                                    <input type="text" v-model="especie.valor"  @blur="setFormaDePagamento()" v-money="money">
                                 </fieldset>
                             </td>
                         </tr>
@@ -34,16 +34,19 @@ export default {
                 decimal: ',',
                 thousands: '.',
                 precision: 2,
-            }        
+            }    
         }
     },
+
+    // props: ['especiesdefault'],
+
     methods:{
         setFormaDePagamento(){
             this.$store.dispatch('setformasDePagamento', this.especies)
         }
     },
     created(){
-        this.$http.get('/api/especies').then(res => {this.$store.commit('commitFormaDePagamento', res.data)})         
+            
     },
     computed:{
         especies(){

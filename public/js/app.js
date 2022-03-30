@@ -5482,10 +5482,11 @@ __webpack_require__.r(__webpack_exports__);
   props: {
     vendedor: String,
     idvendedor: Number,
-    dadospedido: Object
+    dados: Object
   },
   data: function data() {
-    return {};
+    return {// especiesdefault: []
+    };
   },
   computed: {
     viewProduto: function viewProduto() {
@@ -5509,18 +5510,25 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   created: function created() {
+    var _this = this;
+
+    this.$http.get('/api/especies').then(function (res) {
+      _this.especiesdefault = _this.$store.commit('commitFormaDePagamento', res.data);
+    }); // this.$http.get('/api/especies').then(res => { this.especiesdefault = res.data})       
+
     this.$store.commit('commitVendedor', {
       nome: this.vendedor,
       id: this.idvendedor
     });
 
-    if (this.dadospedido != null) {
-      this.$store.state.dadosPedido = this.dadospedido;
+    if (this.dados.idPedido > 0) {
+      //    this.dados.idPedido
+      this.$store.dispatch('setDadosPedido', this.dados);
 
-      if (this.dadospedido.itens == null) {} else {
+      if (this.dados.itens.length > 0) {
         this.$store.state.displayProduto = true;
         this.$store.state.displayDetalhesPedido = true;
-      }
+      } else {}
     }
   }
 });
@@ -5609,7 +5617,6 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     setEmail: function setEmail() {
-      console.log(this.email);
       this.$store.state.dadosPedido.email = this.email;
     },
     setData: function setData() {
@@ -5617,13 +5624,15 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   created: function created() {
-    if (this.$store.state.dadosPedido.idPedido === 0) {
+    this.email = this.$store.state.dadosPedido.email;
+    this.data = this.$store.state.dadosPedido.previsaoEntrega;
+
+    if (this.$store.state.dadosPedido.idPedido <= 0) {
       var data = new Date();
       var dia = String(data.getDate()).padStart(2, '0');
       var mes = String(data.getMonth() + 1).padStart(2, '0');
       var ano = data.getFullYear();
       var dataAtual = ano + '-' + mes + '-' + dia;
-      console.log(dataAtual);
       this.data = dataAtual;
       this.$store.state.dadosPedido.previsaoEntrega = dataAtual;
     }
@@ -5634,12 +5643,6 @@ __webpack_require__.r(__webpack_exports__);
     },
     vendedor: function vendedor() {
       return this.$store.state.dadosPedido.vendedor;
-    },
-    getemail: function getemail() {
-      this.email = this.$store.state.dadosPedido.email;
-    },
-    getdata: function getdata() {
-      this.data = this.$store.state.dadosPedido.previsaoEntrega;
     }
   }
 });
@@ -5765,6 +5768,9 @@ __webpack_require__.r(__webpack_exports__);
       this.displaydados = false;
       this.$store.dispatch('alterarCliente', dado);
     }
+  },
+  created: function created() {
+    this.dados = this.$store.state.dadosPedido.cliente.nome;
   }
 });
 
@@ -6060,7 +6066,6 @@ __webpack_require__.r(__webpack_exports__);
       this.$store.commit('delProduto', i);
     },
     editProduto: function editProduto(i) {
-      console.log(this.$store.state.dadosPedido);
       this.$store.dispatch('alterarProduto', i);
     }
   },
@@ -6190,6 +6195,9 @@ __webpack_require__.r(__webpack_exports__);
     setvalorFrete: function setvalorFrete() {
       this.$store.commit('commitValorFrete', this.valorFrete);
       this.alterarValores();
+    },
+    setObsPedido: function setObsPedido() {
+      this.$store.state.dadosPedido.obsPedido = this.obsPedido;
     }
   },
   computed: {
@@ -6198,9 +6206,6 @@ __webpack_require__.r(__webpack_exports__);
     },
     detalhamentoDeValores: function detalhamentoDeValores() {
       return this.$store.getters.detalhamentoValores;
-    },
-    getObsPedido: function getObsPedido() {
-      this.obsPedido = this.$store.state.obsPedido;
     },
     getFrete: function getFrete() {
       this.tipoFrete = this.$store.getters.getFrete;
@@ -6214,6 +6219,11 @@ __webpack_require__.r(__webpack_exports__);
     this.$http.get('/api/formasentrega').then(function (res) {
       _this.pesquisa = res.data;
     });
+    this.obsPedido = this.$store.state.dadosPedido.obsPedido;
+    this.tipoFrete = this.$store.getters.getFrete;
+    this.valorFrete = this.$store.getters.getFrete.valor;
+    this.acrescimo = this.$store.state.dadosPedido.detalhamentoDeValores.acrescimo;
+    this.desconto = this.$store.state.dadosPedido.detalhamentoDeValores.desconto;
   }
 });
 
@@ -6268,18 +6278,13 @@ __webpack_require__.r(__webpack_exports__);
       }
     };
   },
+  // props: ['especiesdefault'],
   methods: {
     setFormaDePagamento: function setFormaDePagamento() {
       this.$store.dispatch('setformasDePagamento', this.especies);
     }
   },
-  created: function created() {
-    var _this = this;
-
-    this.$http.get('/api/especies').then(function (res) {
-      _this.$store.commit('commitFormaDePagamento', res.data);
-    });
-  },
+  created: function created() {},
   computed: {
     especies: function especies() {
       return this.$store.getters.valorEspecies;
@@ -6786,8 +6791,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
@@ -6796,11 +6803,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
-vue__WEBPACK_IMPORTED_MODULE_1__["default"].use(vuex__WEBPACK_IMPORTED_MODULE_0__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_1__["default"].filter('colocarvirgula', function (valor) {
+
+vue__WEBPACK_IMPORTED_MODULE_2__["default"].use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_2__["default"].filter('colocarvirgula', function (valor) {
   return "".concat(parseFloat(valor).toFixed(2)).replace('.', ',');
 });
-vue__WEBPACK_IMPORTED_MODULE_1__["default"].filter('cpfcnpj', function (valor) {
+vue__WEBPACK_IMPORTED_MODULE_2__["default"].filter('cpfcnpj', function (valor) {
   var arr = "".concat(valor).split('');
 
   if (arr.length === 11) {
@@ -6818,7 +6826,7 @@ vue__WEBPACK_IMPORTED_MODULE_1__["default"].filter('cpfcnpj', function (valor) {
     return '';
   }
 });
-vue__WEBPACK_IMPORTED_MODULE_1__["default"].filter('fone', function (valor) {
+vue__WEBPACK_IMPORTED_MODULE_2__["default"].filter('fone', function (valor) {
   var arr = "".concat(valor).split('');
 
   if (arr.length === 11) {
@@ -6838,7 +6846,7 @@ vue__WEBPACK_IMPORTED_MODULE_1__["default"].filter('fone', function (valor) {
     return '';
   }
 });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new vuex__WEBPACK_IMPORTED_MODULE_0__["default"].Store({
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
   state: {
     //ativar ou desativar componentes
     displayProduto: false,
@@ -6875,6 +6883,7 @@ vue__WEBPACK_IMPORTED_MODULE_1__["default"].filter('fone', function (valor) {
       tipoFrete: {
         tipo: 'Nenhum',
         valor: 0,
+        id: 1,
         cobranca: '0'
       },
       formasDePagamento: {},
@@ -7004,16 +7013,31 @@ vue__WEBPACK_IMPORTED_MODULE_1__["default"].filter('fone', function (valor) {
     commitFormaDePagamento: function commitFormaDePagamento(state, payload) {
       state.dadosPedido.formasDePagamento = payload;
     },
+    commitDadosPedido: function commitDadosPedido(state, payload) {
+      console.log(state.dadosPedido);
+      console.log(payload);
+      state.dadosPedido = payload;
+      setTimeout(function () {
+        state.dadosPedido = payload;
+      }, 1);
+      setTimeout(function () {
+        var especies = payload.formasDePagamento; // :value="especies.findIndex((i) => i.id == especie.id) >= 0 ? especies[especies.findIndex((i) => i.id == especie.id)].valor : null" 
+
+        var g = state.dadosPedido.formasDePagamento.map(function (u, i, a) {
+          return u.id == especies.map(e, s, l);
+        });
+        console.log(g);
+      }, 100);
+    },
     gravarPedido: function gravarPedido(state, payload) {
-      console.log('ff');
       var obj = {};
+      console.log(state.dadosPedido);
       obj = state.dadosPedido;
       axios.post(window.location.href.split('/')[0] + '//' + window.location.hostname + ':8000' + '/home/pedido/gravar', {
         data: obj
       }).then(function (response) {
         response;
-      });
-      window.location.href = 'http://localhost:8000/home/pedido';
+      }); // window.location.href = 'http://localhost:8000/home/pedido'
     }
   },
   actions: {
@@ -7065,10 +7089,14 @@ vue__WEBPACK_IMPORTED_MODULE_1__["default"].filter('fone', function (valor) {
     },
     setformasDePagamento: function setformasDePagamento(_ref7, payload) {// var especie = {}
       // this.$http.get('/api/especies').then(res => {especie = res.data})
-      // console.log(especie)
       // commit('commitFormaDePagamento', especie)
 
       var commit = _ref7.commit;
+    },
+    setDadosPedido: function setDadosPedido(_ref8, payload) {
+      var commit = _ref8.commit;
+      // console.log(payload)
+      commit('commitDadosPedido', payload);
     }
   }
 }));
@@ -34170,6 +34198,7 @@ var render = function () {
               attrs: { name: "observacao", id: "observacao" },
               domProps: { value: _vm.obsPedido },
               on: {
+                blur: _vm.setObsPedido,
                 input: function ($event) {
                   if ($event.target.composing) {
                     return
@@ -34692,8 +34721,8 @@ var render = function () {
                         {
                           name: "model",
                           rawName: "v-model",
-                          value: _vm.especies[i].valor,
-                          expression: "especies[i].valor",
+                          value: especie.valor,
+                          expression: "especie.valor",
                         },
                         {
                           name: "money",
@@ -34703,18 +34732,16 @@ var render = function () {
                         },
                       ],
                       attrs: { type: "text" },
-                      domProps: { value: _vm.especies[i].valor },
+                      domProps: { value: especie.valor },
                       on: {
-                        blur: _vm.setFormaDePagamento,
+                        blur: function ($event) {
+                          return _vm.setFormaDePagamento()
+                        },
                         input: function ($event) {
                           if ($event.target.composing) {
                             return
                           }
-                          _vm.$set(
-                            _vm.especies[i],
-                            "valor",
-                            $event.target.value
-                          )
+                          _vm.$set(especie, "valor", $event.target.value)
                         },
                       },
                     }),

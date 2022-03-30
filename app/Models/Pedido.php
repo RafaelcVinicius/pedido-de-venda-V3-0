@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Clientes;
 use App\Models\User;
+use App\Models\Formaentrega;
 use App\Models\Itempedido;
 use Illuminate\Support\Facades\DB;
 use stdClass;
@@ -27,6 +28,10 @@ class Pedido extends Model
         return $this->hasOne(User::class, 'id', 'id_vendedor');
     }
 
+    public function tipofrete(){
+        return $this->hasOne(Formaentrega::class, 'id', 'id_frete');
+    }
+
     public function itens(){
         return $this->hasMany(Itempedido::class, 'id_pedido', 'id');
     }
@@ -34,6 +39,7 @@ class Pedido extends Model
     public function formadepagamento(){
         return $this->hasMany(Formadepagamento::class, 'id_pedido', 'id');
     }
+
 
     public function getTotalProdutosAttribute() {    
 
