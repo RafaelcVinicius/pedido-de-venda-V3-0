@@ -210,28 +210,11 @@ export default new Vuex.Store({
         commitValorFrete(state, payload){
             state.dadosPedido.tipoFrete.valor = Number(payload.replace('.','').replace(',','.')).toFixed(2)
         },
-        commitFormaDePagamento(state,payload){
-            state.dadosPedido.formasDePagamento = payload
+        commitFormaDePagamento(state, payload){
+            state.dadosPedido.formasDePagamento = payload         
         },
-        commitDadosPedido(state, payload){          
-            console.log(state.dadosPedido)
-            console.log(payload)
-
-            state.dadosPedido = payload;
-
-            setTimeout(()=>{
-                state.dadosPedido = payload;
-            },1)           
-
-            // setTimeout(()=> {  
-            //     var especies = payload.formasDePagamento
-            //     // :value="especies.findIndex((i) => i.id == especie.id) >= 0 ? especies[especies.findIndex((i) => i.id == especie.id)].valor : null" 
-              
-            //   var g =  state.dadosPedido.formasDePagamento.map((u, i, a) => u.id ==  especies.map(e, s, l)   )
-
-            //     console.log(g)
-            // }, 100)
-
+        commitDadosPedido(state, payload){  
+            state.dadosPedido = payload;  
         },
         gravarPedido(state, payload){
             var obj = {}
@@ -282,9 +265,8 @@ export default new Vuex.Store({
             commit('commitTipoFrete', payload)
         },
         setformasDePagamento({commit}, payload){
-            // var especie = {}
-            // this.$http.get('/api/especies').then(res => {especie = res.data})
-            // commit('commitFormaDePagamento', especie)
+           
+            commit('commitFormaDePagamento', payload)
         },
         setDadosPedido({commit}, payload){
             // console.log(payload)

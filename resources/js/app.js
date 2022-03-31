@@ -1,32 +1,52 @@
-/**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
- */
+import Vue from 'vue';
+import './plugins/axios';
+import store from './store/store';
+import VMask from 'v-mask';
+import Money from 'v-money';
+import sortBy from "sort-by";
+
+Vue.use(VMask);
+Vue.use(Money);
+Vue.use(sortBy);
+
 
 require('./bootstrap');
 
 window.Vue = require('vue').default;
 
-/**
- * The following block of code may be used to automatically register your
- * Vue components. It will recursively scan this directory for the Vue
- * components and automatically register them with their "basename".
- *
- * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
- */
+// components globais
 
-// const files = require.context('./', true, /\.vue$/i)
-// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
+//cadastrar cliente
+Vue.component('CadastroCliente', require('./components/cliente/CadastroCliente.vue').default);
+//cadastrar produto
+Vue.component('CadastroProduto', require('./components/produto/CadastroProduto.vue').default);
+//tabela para apresentar produtos igual data table
+Vue.component('DadosTabela', require('./components/tabela/DadosTabela.vue').default);
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
+//pedido de venda principal. 
+Vue.component('PedidoDeVenda', require('./components/pedido/PedidoDeVenda.vue').default);
+     //bloco cliente   
+    Vue.component('DadosCliente', require('./components/pedido/dadoscliente/DadosCliente.vue').default);
+    Vue.component('PedidoStatus', require('./components/pedido/dadoscliente/PedidoStatus.vue').default);
+    Vue.component('PesquisaPedidoCliente', require('./components/pedido/dadoscliente/PesquisaPedidoCliente.vue').default);
+
+    //bloco produto
+    Vue.component('DadosProdutos', require('./components/pedido/dadosproduto/DadosProdutos.vue').default);
+    Vue.component('PesquisaPedidoProduto', require('./components/pedido/dadosproduto/PesquisaPedidoProduto.vue').default);
+    Vue.component('TabelaProdutos', require('./components/pedido/dadosproduto/TabelaProdutos.vue').default);
+    Vue.component('EditarProdutos', require('./components/pedido/dadosproduto/EditarProdutos.vue').default);
+
+    //outros    
+    Vue.component('FormaDePagamento', require('./components/pedido/outros/FormaDePagamento.vue').default);
+    Vue.component('DetalhesDoPedido', require('./components/pedido/outros/DetalhesDoPedido.vue').default);
+
+    //button 
+    
+    Vue.component('BotaoSalvarPedido', require('./components/pedido/botao/BotaoSalvarPedido.vue').default);
+
 
 const app = new Vue({
+    store,
     el: '#app',
 });

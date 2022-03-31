@@ -11,11 +11,11 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="tr-table" v-for="(especie, i) in especies" :key="i">
+                        <tr class="tr-table" v-for="(especie, i) in especiesdefault" :key="i">
                             <td class="td-left"> {{especie.nome}}</td>
                             <td >
                                 <fieldset class="cl">
-                                    <input type="text" v-model="especie.valor"  @blur="setFormaDePagamento()" v-money="money">
+                                    <input type="text" :value="especies.findIndex((i) => i.id == especie.id) >= 0 ? especies[especies.findIndex((i) => i.id == especie.id)].valor : null"  @blur="setFormaDePagamento()" v-money="money">
                                 </fieldset>
                             </td>
                         </tr>
@@ -38,7 +38,7 @@ export default {
         }
     },
 
-    // props: ['especiesdefault'],
+    props: ['especiesdefault'],
 
     methods:{
         setFormaDePagamento(){
