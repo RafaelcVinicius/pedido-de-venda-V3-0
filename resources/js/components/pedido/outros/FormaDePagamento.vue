@@ -15,7 +15,7 @@
                             <td class="td-left"> {{especie.nome}}</td>
                             <td >
                                 <fieldset class="cl">
-                                    <input type="text" v-model="especie.valor"  @blur="setFormaDePagamento()" v-money="money">
+                                    <input type="text" v-model="especie.valor"  @blur="setFormaDePagamento" v-money="money">
                                 </fieldset>
                             </td>
                         </tr>
@@ -42,7 +42,7 @@ export default {
 
     methods:{
         setFormaDePagamento(){
-            this.$store.dispatch('setformasDePagamento', this.especies)
+            // this.$store.dispatch('setformasDePagamento', this.especies)
         }
     },
     created(){

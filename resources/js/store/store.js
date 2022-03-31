@@ -211,27 +211,23 @@ export default new Vuex.Store({
             state.dadosPedido.tipoFrete.valor = Number(payload.replace('.','').replace(',','.')).toFixed(2)
         },
         commitFormaDePagamento(state,payload){
-            state.dadosPedido.formasDePagamento = payload
+            var especies = state.dadosPedido.formasDePagamento
+
+            function logArrayElements(element, index, array) {
+                for(var i=0; i < especies.length ; i++){
+                    especies[i].id == element.id ? colocaovalordaespecie(i, index) : null
+                }
+            }
+            function colocaovalordaespecie(i, index) {
+                payload[index].valor = especies[i].valor
+
+            }
+            payload.forEach(logArrayElements);
+            state.dadosPedido.formasDePagamento = payload 
+
         },
         commitDadosPedido(state, payload){          
-            console.log(state.dadosPedido)
-            console.log(payload)
-
             state.dadosPedido = payload;
-
-            setTimeout(()=>{
-                state.dadosPedido = payload;
-            },1)           
-
-            setTimeout(()=> {  
-                var especies = payload.formasDePagamento
-                // :value="especies.findIndex((i) => i.id == especie.id) >= 0 ? especies[especies.findIndex((i) => i.id == especie.id)].valor : null" 
-              
-              var g =  state.dadosPedido.formasDePagamento.map((u, i, a) => u.id ==  especies.map(e, s, l)   )
-
-                console.log(g)
-            }, 100)
-
         },
         gravarPedido(state, payload){
             var obj = {}
@@ -239,7 +235,7 @@ export default new Vuex.Store({
             obj = state.dadosPedido 
 
             axios.post(window.location.href.split('/')[0] + '//' + window.location.hostname+':8000' + '/home/pedido/gravar', {data:obj}).then(response => {response})
-            // window.location.href = 'http://localhost:8000/home/pedido'
+            window.location.href = 'http://localhost:8000/home/pedido'
         }
     },
     actions:{
@@ -282,15 +278,10 @@ export default new Vuex.Store({
             commit('commitTipoFrete', payload)
         },
         setformasDePagamento({commit}, payload){
-            // var especie = {}
-            // this.$http.get('/api/especies').then(res => {especie = res.data})
-            // commit('commitFormaDePagamento', especie)
+            commit('commitFormaDePagamento', payload)
         },
         setDadosPedido({commit}, payload){
-            // console.log(payload)
-
             commit('commitDadosPedido', payload)
         },     
-
     }
 })

@@ -5485,7 +5485,8 @@ __webpack_require__.r(__webpack_exports__);
     dados: Object
   },
   data: function data() {
-    return {// especiesdefault: []
+    return {
+      especiesdefault: []
     };
   },
   computed: {
@@ -5513,7 +5514,7 @@ __webpack_require__.r(__webpack_exports__);
     var _this = this;
 
     this.$http.get('/api/especies').then(function (res) {
-      _this.especiesdefault = _this.$store.commit('commitFormaDePagamento', res.data);
+      _this.especiesdefault = _this.$store.dispatch('setformasDePagamento', res.data);
     }); // this.$http.get('/api/especies').then(res => { this.especiesdefault = res.data})       
 
     this.$store.commit('commitVendedor', {
@@ -6280,8 +6281,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   // props: ['especiesdefault'],
   methods: {
-    setFormaDePagamento: function setFormaDePagamento() {
-      this.$store.dispatch('setformasDePagamento', this.especies);
+    setFormaDePagamento: function setFormaDePagamento() {// this.$store.dispatch('setformasDePagamento', this.especies)
     }
   },
   created: function created() {},
@@ -7011,23 +7011,23 @@ vue__WEBPACK_IMPORTED_MODULE_2__["default"].filter('fone', function (valor) {
       state.dadosPedido.tipoFrete.valor = Number(payload.replace('.', '').replace(',', '.')).toFixed(2);
     },
     commitFormaDePagamento: function commitFormaDePagamento(state, payload) {
+      var especies = state.dadosPedido.formasDePagamento;
+
+      function logArrayElements(element, index, array) {
+        for (var i = 0; i < especies.length; i++) {
+          especies[i].id == element.id ? colocaovalordaespecie(i, index) : null;
+        }
+      }
+
+      function colocaovalordaespecie(i, index) {
+        payload[index].valor = especies[i].valor;
+      }
+
+      payload.forEach(logArrayElements);
       state.dadosPedido.formasDePagamento = payload;
     },
     commitDadosPedido: function commitDadosPedido(state, payload) {
-      console.log(state.dadosPedido);
-      console.log(payload);
       state.dadosPedido = payload;
-      setTimeout(function () {
-        state.dadosPedido = payload;
-      }, 1);
-      setTimeout(function () {
-        var especies = payload.formasDePagamento; // :value="especies.findIndex((i) => i.id == especie.id) >= 0 ? especies[especies.findIndex((i) => i.id == especie.id)].valor : null" 
-
-        var g = state.dadosPedido.formasDePagamento.map(function (u, i, a) {
-          return u.id == especies.map(e, s, l);
-        });
-        console.log(g);
-      }, 100);
     },
     gravarPedido: function gravarPedido(state, payload) {
       var obj = {};
@@ -7037,7 +7037,8 @@ vue__WEBPACK_IMPORTED_MODULE_2__["default"].filter('fone', function (valor) {
         data: obj
       }).then(function (response) {
         response;
-      }); // window.location.href = 'http://localhost:8000/home/pedido'
+      });
+      window.location.href = 'http://localhost:8000/home/pedido';
     }
   },
   actions: {
@@ -7087,15 +7088,12 @@ vue__WEBPACK_IMPORTED_MODULE_2__["default"].filter('fone', function (valor) {
 
       commit('commitTipoFrete', payload);
     },
-    setformasDePagamento: function setformasDePagamento(_ref7, payload) {// var especie = {}
-      // this.$http.get('/api/especies').then(res => {especie = res.data})
-      // commit('commitFormaDePagamento', especie)
-
+    setformasDePagamento: function setformasDePagamento(_ref7, payload) {
       var commit = _ref7.commit;
+      commit('commitFormaDePagamento', payload);
     },
     setDadosPedido: function setDadosPedido(_ref8, payload) {
       var commit = _ref8.commit;
-      // console.log(payload)
       commit('commitDadosPedido', payload);
     }
   }
@@ -32967,6 +32965,7 @@ var render = function () {
             expression: "viewDetalhesPedido",
           },
         ],
+        attrs: { especiesdefault: _vm.especiesdefault },
       }),
     ],
     1
@@ -34734,9 +34733,7 @@ var render = function () {
                       attrs: { type: "text" },
                       domProps: { value: especie.valor },
                       on: {
-                        blur: function ($event) {
-                          return _vm.setFormaDePagamento()
-                        },
+                        blur: _vm.setFormaDePagamento,
                         input: function ($event) {
                           if ($event.target.composing) {
                             return
