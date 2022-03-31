@@ -223,14 +223,14 @@ export default new Vuex.Store({
                 state.dadosPedido = payload;
             },1)           
 
-            setTimeout(()=> {  
-                var especies = payload.formasDePagamento
-                // :value="especies.findIndex((i) => i.id == especie.id) >= 0 ? especies[especies.findIndex((i) => i.id == especie.id)].valor : null" 
+            // setTimeout(()=> {  
+            //     var especies = payload.formasDePagamento
+            //     // :value="especies.findIndex((i) => i.id == especie.id) >= 0 ? especies[especies.findIndex((i) => i.id == especie.id)].valor : null" 
               
-              var g =  state.dadosPedido.formasDePagamento.map((u, i, a) => u.id ==  especies.map(e, s, l)   )
+            //   var g =  state.dadosPedido.formasDePagamento.map((u, i, a) => u.id ==  especies.map(e, s, l)   )
 
-                console.log(g)
-            }, 100)
+            //     console.log(g)
+            // }, 100)
 
         },
         gravarPedido(state, payload){
