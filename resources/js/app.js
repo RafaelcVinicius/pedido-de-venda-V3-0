@@ -44,7 +44,7 @@ Vue.component('PedidoDeVenda', require('./components/pedido/PedidoDeVenda.vue').
     //button 
     
     Vue.component('BotaoSalvarPedido', require('./components/pedido/botao/BotaoSalvarPedido.vue').default);
-https://www.digitalocean.com/community/tutorials/how-to-containerize-a-laravel-application-for-development-with-docker-compose-on-ubuntu-18-04-pt
+    //https://www.digitalocean.com/community/tutorials/how-to-containerize-a-laravel-application-for-development-with-docker-compose-on-ubuntu-18-04-pt
 
 const app = new Vue({
     store,
