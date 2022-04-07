@@ -1,6 +1,8 @@
 version: "3.7"
 services:
   app:
+    depends_on: 
+      - db
     build:
       args:
         user: sammy
@@ -27,23 +29,46 @@ services:
       MYSQL_USER: ${DB_USERNAME}
       SERVICE_TAGS: dev
       SERVICE_NAME: mysql
+    ports:
+      - 3306:3306
     volumes:
       - ./docker-compose/mysql:/docker-entrypoint-initdb.d
+      - dbdata:/var/lib/mysql
     networks:
       - travellist
 
   nginx:
+    depends_on: 
+      - app
     image: nginx:alpine
     container_name: travellist-nginx
     restart: unless-stopped
     ports:
-      - 8000:80
+      - 8000:80    
     volumes:
       - ./:/var/www
       - ./docker-compose/nginx:/etc/nginx/conf.d/
     networks:
       - travellist
 
+  scripts:
+    depends_on:
+      - app
+      - db
+      - nginx
+    image: travellist
+    container_name: script_pd
+    command: bash -c 'composer install &&
+                      php /var/www/artisan migrate --force'  
+    volumes:
+      - ./:/var/www
+    networks:
+      - travellist
+
 networks:
   travellist:
     driver: bridge
+
+volumes:
+  dbdata:
+    driver: local

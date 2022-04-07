@@ -41,7 +41,7 @@ Route::prefix('home')->group(function () {
         route::post('/gravar', [PedidoController::class, 'store'])->name('pedido.store');
 
         route::get('{id}/edit/', [PedidoController::class, 'edit'])->name('pedido.edit');
-        
+
         route::put('{id}/status/', [PedidoController::class, 'status'])->name('pedido.status');
 
         route::get('pdf/{id}', [PedidoController::class, 'pdf'])->name('pedido.pdf');

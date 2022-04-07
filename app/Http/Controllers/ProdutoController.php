@@ -43,7 +43,7 @@ class ProdutoController extends Controller
        $dados->qtde         = $request->qtde;
        $dados->id_aplicacao = $request->id_aplicacao;
        $dados->id_un        = $request->id_unidade;
-       $dados->ativo        = 'true';
+       $dados->ativo        = true;
        $dados->referencia   = $request->referencia;
        $dados->precocusto   = str_replace(',' , '.', str_replace('.' ,'' , $request->precocusto));
        $dados->precovenda   = str_replace(',' , '.', str_replace('.' ,'' , $request->precovenda));

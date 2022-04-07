@@ -25,8 +25,6 @@ class PedidoController extends Controller
     public function store(Request $request){
 
         $data = $request->get('data');
-// dd($data['obsPedido']);
-        // dd($data['formasDePagamento'][0]);
 
         if($data['status'] == "Aberto" ){            
             $pedido = new Pedido();
